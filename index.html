@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glitch Guild - Gaming Community</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #7c3aed;
+            --primary-dark: #5b21b6;
+            --secondary: #10b981;
+            --bg-dark: #0f172a;
+            --bg-card-dark: #1e293b;
+            --text-dark: #f1f5f9;
+            --text-muted-dark: #94a3b8;
+            --border-dark: #334155;
+            --bg-light: #f8fafc;
+            --bg-card-light: #ffffff;
+            --text-light: #1e293b;
+            --text-muted-light: #64748b;
+            --border-light: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        body.light-mode {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 30px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--bg-card-dark);
+            border-bottom: 1px solid var(--border-dark);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        body.light-mode header {
+            background-color: var(--bg-card-light);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        body.light-mode .nav-links a {
+            color: var(--text-light);
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(124, 58, 237, 0.1);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .theme-toggle, .user-profile {
+            background: none;
+            border: none;
+            color: var(--text-dark);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body.light-mode .theme-toggle, body.light-mode .user-profile {
+            color: var(--text-light);
+        }
+
+        .theme-toggle:hover, .user-profile:hover {
+            background-color: rgba(124, 58, 237, 0.1);
+        }
+
+        /* Login Modal */
+        .login-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-content {
+            background-color: var(--bg-card-dark);
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid var(--border-dark);
+        }
+
+        body.light-mode .login-content {
+            background-color: var(--bg-card-light);
+            border: 1px solid var(--border-light);
+        }
+
+        .login-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .close-login {
+            background: none;
+            border: none;
+            color: var(--text-dark);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .login-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .login-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .login-btn.google {
+            background-color: #4285F4;
+        }
+
+        .login-btn.google:hover {
+            background-color: #3367D6;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background-color: rgba(124, 58, 237, 0.1);
+            border-radius: 20px;
+        }
+
+        .user-avatar-header {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 6px;
+        }
+
+        .logout-btn:hover {
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 90px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+
+        .sidebar-section {
+            background-color: var(--bg-card-dark);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-dark);
+        }
+
+        body.light-mode .sidebar-section {
+            background-color: var(--bg-card-light);
+            border: 1px solid var(--border-light);
+        }
+
+        .sidebar h3 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .categories-list {
+            list-style: none;
+        }
+
+        .categories-list li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .categories-list li:hover, .categories-list li.active {
+            background-color: rgba(124, 58, 237, 0.1);
+        }
+
+        .categories-list li i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .trending-games {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .game-tag {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background-color: rgba(30, 41, 59, 0.5);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        body.light-mode .game-tag {
+            background-color: rgba(241, 245, 249, 0.7);
+        }
+
+        .game-tag img {
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            object-fit: cover;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .create-post {
+            background-color: var(--bg-card-dark);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-dark);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        body.light-mode .create-post {
+            background-color: var(--bg-card-light);
+            border: 1px solid var(--border-light);
+        }
+
+        .create-post input {
+            flex: 1;
+            padding: 12px 20px;
+            background-color: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border-dark);
+            border-radius: 30px;
+            color: var(--text-dark);
+            font-size: 1rem;
+        }
+
+        body.light-mode .create-post input {
+            background-color: rgba(241, 245, 249, 0.7);
+            border: 1px solid var(--border-light);
+            color: var(--text-light);
+        }
+
+        .create-post input::placeholder {
+            color: var(--text-muted-dark);
+        }
+
+        body.light-mode .create-post input::placeholder {
+            color: var(--text-muted-light);
+        }
+
+        .post-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .post-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .post-btn:disabled {
+            background-color: var(--border-dark);
+            cursor: not-allowed;
+        }
+
+        .sort-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .sort-btn {
+            background-color: var(--bg-card-dark);
+            color: var(--text-dark);
+            border: 1px solid var(--border-dark);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        body.light-mode .sort-btn {
+            background-color: var(--bg-card-light);
+            color: var(--text-light);
+            border: 1px solid var(--border-light);
+        }
+
+        .sort-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .post {
+            background-color: var(--bg-card-dark);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-dark);
+        }
+
+        body.light-mode .post {
+            background-color: var(--bg-card-light);
+            border: 1px solid var(--border-light);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 12px;
+            object-fit: cover;
+        }
+
+        .post-user {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .post-time {
+            color: var(--text-muted-dark);
+            font-size: 0.85rem;
+            margin-left: 5px;
+        }
+
+        body.light-mode .post-time {
+            color: var(--text-muted-light);
+        }
+
+        .post-category {
+            background-color: rgba(124, 58, 237, 0.1);
+            color: var(--primary);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+            font-weight: 500;
+        }
+
+        .post-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .post-content {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .post-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Comments Section */
+        .comments-section {
+            margin-top: 20px;
+            border-top: 1px solid var(--border-dark);
+            padding-top: 20px;
+        }
+
+        body.light-mode .comments-section {
+            border-top: 1px solid var(--border-light);
+        }
+
+        .comment-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .comment-input {
+            flex: 1;
+            padding: 10px 15px;
+            background-color: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border-dark);
+            border-radius: 20px;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+
+        body.light-mode .comment-input {
+            background-color: rgba(241, 245, 249, 0.7);
+            border: 1px solid var(--border-light);
+            color: var(--text-light);
+        }
+
+        .comment-input::placeholder {
+            color: var(--text-muted-dark);
+        }
+
+        body.light-mode .comment-input::placeholder {
+            color: var(--text-muted-light);
+        }
+
+        .comment-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .comment-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .comment-btn:disabled {
+            background-color: var(--border-dark);
+            cursor: not-allowed;
+        }
+
+        .comments-list {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .comment {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        body.light-mode .comment {
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .comment:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .comment-user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+
+        .comment-user {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .comment-time {
+            color: var(--text-muted-dark);
+            font-size: 0.8rem;
+            margin-left: 5px;
+        }
+
+        body.light-mode .comment-time {
+            color: var(--text-muted-light);
+        }
+
+        .comment-content {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-left: 40px;
+        }
+
+        .no-comments {
+            text-align: center;
+            color: var(--text-muted-dark);
+            font-style: italic;
+            padding: 20px;
+        }
+
+        body.light-mode .no-comments {
+            color: var(--text-muted-light);
+        }
+
+        .post-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .post-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .vote-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: none;
+            color: var(--text-muted-dark);
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 6px;
+        }
+
+        body.light-mode .vote-btn {
+            color: var(--text-muted-light);
+        }
+
+        .vote-btn:hover {
+            background-color: rgba(124, 58, 237, 0.1);
+        }
+
+        .vote-btn.upvote.active {
+            color: var(--success);
+        }
+
+        .vote-btn.downvote.active {
+            color: var(--danger);
+        }
+
+        .comments-btn, .share-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: none;
+            color: var(--text-muted-dark);
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 6px;
+        }
+
+        body.light-mode .comments-btn, body.light-mode .share-btn {
+            color: var(--text-muted-light);
+        }
+
+        .comments-btn:hover, .share-btn:hover {
+            background-color: rgba(124, 58, 237, 0.1);
+        }
+
+        .comments-btn.active {
+            color: var(--primary);
+        }
+
+        /* Right Sidebar Styles */
+        .right-sidebar {
+            width: 300px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 90px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+
+        .online-users {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .user-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .user-item:hover {
+            background-color: rgba(124, 58, 237, 0.1);
+        }
+
+        .user-avatar-small {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--success);
+            margin-left: auto;
+        }
+
+        .user-status.away {
+            background-color: var(--warning);
+        }
+
+        .user-status.offline {
+            background-color: var(--text-muted-dark);
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: var(--bg-card-dark);
+            border-top: 1px solid var(--border-dark);
+            padding: 30px 0;
+            margin-top: 40px;
+        }
+
+        body.light-mode footer {
+            background-color: var(--bg-card-light);
+            border-top: 1px solid var(--border-light);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--text-muted-dark);
+            text-decoration: none;
+        }
+
+        body.light-mode .footer-links a {
+            color: var(--text-muted-light);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-dark);
+            color: var(--text-muted-dark);
+            font-size: 0.9rem;
+        }
+
+        body.light-mode .copyright {
+            border-top: 1px solid var(--border-light);
+            color: var(--text-muted-light);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1100px) {
+            .right-sidebar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .header-content {
+                flex-wrap: wrap;
+            }
+            
+            .comment-form {
+                flex-direction: column;
+            }
+            
+            .comment-btn {
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Modal -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-content">
+            <div class="login-header">
+                <h2>Join Glitch Guild</h2>
+                <button class="close-login" id="closeLogin">&times;</button>
+            </div>
+            <p>Login to post, comment, vote, and join the gaming community!</p>
+            <button class="login-btn google" id="googleLoginBtn">
+                <i class="fab fa-google"></i>
+                Continue with Google
+            </button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-gamepad"></i>
+                <span>Glitch Guild</span>
+            </div>
+            <div class="nav-links">
+                <a href="#"><i class="fas fa-home"></i> Home</a>
+                <a href="#"><i class="fas fa-fire"></i> Popular</a>
+                <a href="#"><i class="fas fa-compass"></i> Discover</a>
+                <a href="#"><i class="fas fa-trophy"></i> Tournaments</a>
+                <a href="#"><i class="fas fa-users"></i> Communities</a>
+            </div>
+            <div class="user-actions" id="userActions">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div id="userInfo" style="display: none;">
+                    <div class="user-info">
+                        <img src="" alt="User Avatar" class="user-avatar-header" id="userAvatarHeader">
+                        <span id="userName"></span>
+                        <button class="logout-btn" id="logoutBtn">Logout</button>
+                    </div>
+                </div>
+                <button class="user-profile" id="loginBtn">
+                    <i class="fas fa-user-circle"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3><i class="fas fa-list"></i> Categories</h3>
+                <ul class="categories-list">
+                    <li class="active" data-category="all">
+                        <i class="fas fa-globe"></i> All Games
+                    </li>
+                    <li data-category="fps">
+                        <i class="fas fa-crosshairs"></i> FPS
+                    </li>
+                    <li data-category="rpg">
+                        <i class="fas fa-dragon"></i> RPG
+                    </li>
+                    <li data-category="strategy">
+                        <i class="fas fa-chess-board"></i> Strategy
+                    </li>
+                    <li data-category="sports">
+                        <i class="fas fa-futbol"></i> Sports
+                    </li>
+                    <li data-category="indie">
+                        <i class="fas fa-gamepad"></i> Indie
+                    </li>
+                    <li data-category="mmo">
+                        <i class="fas fa-users"></i> MMO
+                    </li>
+                    <li data-category="mobile">
+                        <i class="fas fa-mobile-alt"></i> Mobile
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3><i class="fas fa-chart-line"></i> Trending Games</h3>
+                <div class="trending-games">
+                    <div class="game-tag">
+                        <img src="https://via.placeholder.com/30/7c3aed/FFFFFF?text=EL" alt="Elden Ring">
+                        <span>Elden Ring</span>
+                    </div>
+                    <div class="game-tag">
+                        <img src="https://via.placeholder.com/30/10b981/FFFFFF?text=BG3" alt="Baldur's Gate 3">
+                        <span>Baldur's Gate 3</span>
+                    </div>
+                    <div class="game-tag">
+                        <img src="https://via.placeholder.com/30/ef4444/FFFFFF?text=CS2" alt="Counter-Strike 2">
+                        <span>Counter-Strike 2</span>
+                    </div>
+                    <div class="game-tag">
+                        <img src="https://via.placeholder.com/30/f59e0b/FFFFFF?text=HL" alt="Helldivers 2">
+                        <span>Helldivers 2</span>
+                    </div>
+                    <div class="game-tag">
+                        <img src="https://via.placeholder.com/30/8b5cf6/FFFFFF?text=GTA6" alt="GTA VI">
+                        <span>GTA VI</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3><i class="fas fa-info-circle"></i> Guild Rules</h3>
+                <ul class="categories-list">
+                    <li><i class="fas fa-check-circle"></i> Be Respectful</li>
+                    <li><i class="fas fa-check-circle"></i> No Spoilers</li>
+                    <li><i class="fas fa-check-circle"></i> Keep it Gaming</li>
+                    <li><i class="fas fa-check-circle"></i> No Cheating Talk</li>
+                    <li><i class="fas fa-check-circle"></i> LFG Allowed</li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="create-post">
+                <img src="https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG" alt="User Avatar" class="user-avatar" id="createPostAvatar">
+                <input type="text" id="postContent" placeholder="Share your glitch, tip, or gaming moment..." disabled>
+                <button class="post-btn" id="publishPostBtn" disabled>
+                    <i class="fas fa-paper-plane"></i> Post
+                </button>
+            </div>
+            
+            <div class="sort-options">
+                <button class="sort-btn active" data-sort="hot">Hot</button>
+                <button class="sort-btn" data-sort="new">New</button>
+                <button class="sort-btn" data-sort="top">Top</button>
+                <button class="sort-btn" data-sort="controversial">Controversial</button>
+                <button class="sort-btn" data-sort="rising">Rising</button>
+            </div>
+            
+            <!-- Posts Container -->
+            <div id="postsContainer">
+                <!-- Posts will be loaded here from Firebase -->
+                <div class="post" id="loadingPost">
+                    <div class="post-header">
+                        <div style="display: flex; align-items: center; width: 100%;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(90deg, var(--border-dark) 25%, var(--bg-dark) 50%, var(--border-dark) 75%); background-size: 200% 100%; animation: loading 1.5s infinite; margin-right: 12px;"></div>
+                            <div style="flex: 1;">
+                                <div style="height: 20px; width: 150px; background: linear-gradient(90deg, var(--border-dark) 25%, var(--bg-dark) 50%, var(--border-dark) 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="height: 24px; width: 80%; background: linear-gradient(90deg, var(--border-dark) 25%, var(--bg-dark) 50%, var(--border-dark) 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 4px; margin-bottom: 10px;"></div>
+                    <div style="height: 16px; width: 100%; background: linear-gradient(90deg, var(--border-dark) 25%, var(--bg-dark) 50%, var(--border-dark) 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 4px; margin-bottom: 5px;"></div>
+                    <div style="height: 16px; width: 90%; background: linear-gradient(90deg, var(--border-dark) 25%, var(--bg-dark) 50%, var(--border-dark) 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 4px;"></div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Sidebar -->
+        <aside class="right-sidebar">
+            <div class="sidebar-section">
+                <h3><i class="fas fa-users"></i> Online Guild Members</h3>
+                <div class="online-users" id="onlineUsers">
+                    <!-- Users will be loaded here -->
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3><i class="fas fa-calendar-alt"></i> Upcoming Events</h3>
+                <div class="trending-games">
+                    <div class="game-tag">
+                        <i class="fas fa-trophy" style="color: var(--warning);"></i>
+                        <div>
+                            <div style="font-weight: 600;">CS2 Tournament</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted-dark);">March 15, 8:00 PM EST</div>
+                        </div>
+                    </div>
+                    <div class="game-tag">
+                        <i class="fas fa-users" style="color: var(--success);"></i>
+                        <div>
+                            <div style="font-weight: 600;">Raid Night: Destiny 2</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted-dark);">March 17, 9:00 PM EST</div>
+                        </div>
+                    </div>
+                    <div class="game-tag">
+                        <i class="fas fa-gamepad" style="color: var(--primary);"></i>
+                        <div>
+                            <div style="font-weight: 600;">Indie Game Showcase</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted-dark);">March 20, 7:00 PM EST</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3><i class="fas fa-bullhorn"></i> Guild Announcements</h3>
+                <p style="font-size: 0.9rem; margin-bottom: 10px;">Welcome to Glitch Guild v2.0! Now with Firebase integration!</p>
+                <ul class="categories-list">
+                    <li><i class="fas fa-check" style="color: var(--success);"></i> Real-time posts</li>
+                    <li><i class="fas fa-check" style="color: var(--success);"></i> Google login</li>
+                    <li><i class="fas fa-check" style="color: var(--success);"></i> Comment system</li>
+                    <li><i class="fas fa-check" style="color: var(--success);"></i> Live voting</li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-section">
+                <h4>Glitch Guild</h4>
+                <p>The ultimate community for gamers to share, discuss, and connect over everything gaming.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Explore</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Popular Games</a></li>
+                    <li><a href="#">Tournaments</a></li>
+                    <li><a href="#">Community Rules</a></li>
+                    <li><a href="#">Leaderboards</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Report Issue</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fab fa-discord"></i> Discord</a></li>
+                    <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    <li><a href="#"><i class="fab fa-youtube"></i> YouTube</a></li>
+                    <li><a href="#"><i class="fab fa-twitch"></i> Twitch</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container copyright">
+            &copy; 2023 Glitch Guild. All rights reserved. All game content and trademarks are property of their respective owners.
+        </div>
+    </footer>
+
+    <!-- Firebase & App Script -->
+    <script type="module">
+        // Import Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+        import { 
+            getAuth, 
+            GoogleAuthProvider, 
+            signInWithPopup, 
+            signOut, 
+            onAuthStateChanged 
+        } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+        import { 
+            getFirestore, 
+            collection, 
+            addDoc, 
+            getDocs, 
+            query, 
+            orderBy, 
+            serverTimestamp,
+            onSnapshot,
+            doc,
+            updateDoc,
+            increment,
+            getDoc,
+            setDoc,
+            where,
+            limit
+        } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBOT0ozwChf5Y5_j-0zvY6AjYimBi5xXg8",
+            authDomain: "glitch-guild.firebaseapp.com",
+            databaseURL: "https
