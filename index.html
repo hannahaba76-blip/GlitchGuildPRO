@@ -1127,5 +1127,162 @@
 };
   const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const
+        const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
+
+        // DOM Elements
+        const loginModal = document.getElementById('loginModal');
+        const closeLoginBtn = document.getElementById('closeLogin');
+        const googleLoginBtn = document.getElementById('googleLoginBtn');
+        const loginBtn = document.getElementById('loginBtn');
+        const userInfo = document.getElementById('userInfo');
+        const userName = document.getElementById('userName');
+        const userAvatarHeader = document.getElementById('userAvatarHeader');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const createPostAvatar = document.getElementById('createPostAvatar');
+        const postContent = document.getElementById('postContent');
+        const publishPostBtn = document.getElementById('publishPostBtn');
+        const postsContainer = document.getElementById('postsContainer');
+
+        // Login Functions
+        async function loginWithGoogle() {
+            try {
+                const result = await signInWithPopup(auth, provider);
+                console.log("Logged in:", result.user.displayName);
+                loginModal.style.display = 'none';
+            } catch (error) {
+                console.error("Login error:", error);
+                alert('Login failed: ' + error.message);
+            }
+        }
+
+        async function logout() {
+            try {
+                await signOut(auth);
+                console.log("Logged out");
+            } catch (error) {
+                console.error("Logout error:", error);
+            }
+        }
+
+        function updateUserUI(user) {
+            if (user) {
+                // User is logged in
+                userInfo.style.display = 'block';
+                loginBtn.style.display = 'none';
+                userName.textContent = user.displayName;
+                userAvatarHeader.src = user.photoURL || 'https://via.placeholder.com/32/7c3aed/FFFFFF?text=GG';
+                
+                // Enable post creation
+                postContent.disabled = false;
+                publishPostBtn.disabled = false;
+                createPostAvatar.src = user.photoURL || 'https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG';
+            } else {
+                // User is logged out
+                userInfo.style.display = 'none';
+                loginBtn.style.display = 'flex';
+                
+                // Disable post creation
+                postContent.disabled = true;
+                publishPostBtn.disabled = true;
+                createPostAvatar.src = 'https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG';
+            }
+        }
+
+        // Event Listeners
+        loginBtn.addEventListener('click', () => {
+            loginModal.style.display = 'flex';
+        });
+
+        closeLoginBtn.addEventListener('click', () => {
+            loginModal.style.display = 'none';
+        });
+
+        googleLoginBtn.addEventListener('click', loginWithGoogle);
+        logoutBtn.addEventListener('click', logout);
+
+        // Auth State Listener
+        onAuthStateChanged(auth, (user) => {
+            updateUserUI(user);
+        });
+
+        // Post Functions
+        publishPostBtn.addEventListener('click', async () => {
+            const user = auth.currentUser;
+            if (!user) {
+                loginModal.style.display = 'flex';
+                return;
+            }
+            
+            const content = postContent.value.trim();
+            if (!content) {
+                alert('Please write something to post!');
+                return;
+            }
+            
+            try {
+                await addDoc(collection(db, 'posts'), {
+                    userId: user.uid,
+                    userName: user.displayName,
+                    userPhoto: user.photoURL,
+                    content: content,
+                    category: 'general',
+                    upvotes: 0,
+                    downvotes: 0,
+                    comments: 0,
+                    createdAt: serverTimestamp()
+                });
+                
+                postContent.value = '';
+                alert('Post published!');
+            } catch (error) {
+                console.error('Error posting:', error);
+                alert('Error: ' + error.message);
+            }
+        });
+
+        // Load Posts
+        function loadPosts() {
+            const postsRef = collection(db, 'posts');
+            const q = query(postsRef, orderBy('createdAt', 'desc'));
+            
+            onSnapshot(q, (snapshot) => {
+                postsContainer.innerHTML = '';
+                
+                if (snapshot.empty) {
+                    postsContainer.innerHTML = '<div class="post"><p>No posts yet. Be the first!</p></div>';
+                    return;
+                }
+                
+                snapshot.forEach((doc) => {
+                    const post = doc.data();
+                    const postElement = document.createElement('div');
+                    postElement.className = 'post';
+                    postElement.innerHTML = `
+                        <div class="post-header">
+                            <img src="${post.userPhoto || 'https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG'}" class="user-avatar">
+                            <div>
+                                <span class="post-user">${post.userName}</span>
+                                <span class="post-category">${post.category || 'General'}</span>
+                            </div>
+                        </div>
+                        <p class="post-content">${post.content}</p>
+                        <div class="post-footer">
+                            <div class="post-actions">
+                                <button class="vote-btn upvote">👍 ${post.upvotes || 0}</button>
+                                <button class="vote-btn downvote">👎 ${post.downvotes || 0}</button>
+                                <button class="comments-btn">💬 ${post.comments || 0}</button>
+                            </div>
+                        </div>
+                    `;
+                    postsContainer.appendChild(postElement);
+                });
+            });
+        }
+
+        // Initialize
+        loadPosts();
+        console.log("Glitch Guild initialized! 🎮");
+    </script>
+
 
