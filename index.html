@@ -384,11 +384,6 @@
             background-color: var(--primary-dark);
         }
 
-        .post-btn:disabled {
-            background-color: var(--border-dark);
-            cursor: not-allowed;
-        }
-
         .sort-options {
             display: flex;
             gap: 10px;
@@ -491,135 +486,6 @@
             margin-bottom: 20px;
         }
 
-        /* Comments Section */
-        .comments-section {
-            margin-top: 20px;
-            border-top: 1px solid var(--border-dark);
-            padding-top: 20px;
-        }
-
-        body.light-mode .comments-section {
-            border-top: 1px solid var(--border-light);
-        }
-
-        .comment-form {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .comment-input {
-            flex: 1;
-            padding: 10px 15px;
-            background-color: rgba(30, 41, 59, 0.5);
-            border: 1px solid var(--border-dark);
-            border-radius: 20px;
-            color: var(--text-dark);
-            font-size: 0.9rem;
-        }
-
-        body.light-mode .comment-input {
-            background-color: rgba(241, 245, 249, 0.7);
-            border: 1px solid var(--border-light);
-            color: var(--text-light);
-        }
-
-        .comment-input::placeholder {
-            color: var(--text-muted-dark);
-        }
-
-        body.light-mode .comment-input::placeholder {
-            color: var(--text-muted-light);
-        }
-
-        .comment-btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        .comment-btn:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .comment-btn:disabled {
-            background-color: var(--border-dark);
-            cursor: not-allowed;
-        }
-
-        .comments-list {
-            max-height: 400px;
-            overflow-y: auto;
-            padding-right: 10px;
-        }
-
-        .comment {
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--border-dark);
-        }
-
-        body.light-mode .comment {
-            border-bottom: 1px solid var(--border-light);
-        }
-
-        .comment:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-
-        .comment-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .comment-user-avatar {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            margin-right: 10px;
-            object-fit: cover;
-        }
-
-        .comment-user {
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .comment-time {
-            color: var(--text-muted-dark);
-            font-size: 0.8rem;
-            margin-left: 5px;
-        }
-
-        body.light-mode .comment-time {
-            color: var(--text-muted-light);
-        }
-
-        .comment-content {
-            font-size: 0.95rem;
-            line-height: 1.5;
-            margin-left: 40px;
-        }
-
-        .no-comments {
-            text-align: center;
-            color: var(--text-muted-dark);
-            font-style: italic;
-            padding: 20px;
-        }
-
-        body.light-mode .no-comments {
-            color: var(--text-muted-light);
-        }
-
         .post-footer {
             display: flex;
             align-items: center;
@@ -681,10 +547,6 @@
 
         .comments-btn:hover, .share-btn:hover {
             background-color: rgba(124, 58, 237, 0.1);
-        }
-
-        .comments-btn.active {
-            color: var(--primary);
         }
 
         /* Right Sidebar Styles */
@@ -828,14 +690,6 @@
             .header-content {
                 flex-wrap: wrap;
             }
-            
-            .comment-form {
-                flex-direction: column;
-            }
-            
-            .comment-btn {
-                align-self: flex-end;
-            }
         }
     </style>
 </head>
@@ -962,8 +816,8 @@
         <main class="main-content">
             <div class="create-post">
                 <img src="https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG" alt="User Avatar" class="user-avatar" id="createPostAvatar">
-                <input type="text" id="postContent" placeholder="Share your glitch, tip, or gaming moment..." disabled>
-                <button class="post-btn" id="publishPostBtn" disabled>
+                <input type="text" id="postContent" placeholder="Share your glitch, tip, or gaming moment...">
+                <button class="post-btn" id="publishPostBtn">
                     <i class="fas fa-paper-plane"></i> Post
                 </button>
             </div>
@@ -978,19 +832,32 @@
             
             <!-- Posts Container -->
             <div id="postsContainer">
-                <!-- Posts will be loaded here from Firebase -->
-                <div class="post" id="loadingPost">
+                <div class="post">
                     <div class="post-header">
-                        <div style="display: flex; align-items: center; width: 100%;">
-                            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(90deg, var(--border-dark) 25%, var(--bg-dark) 50%, var(--border-dark) 75%); background-size: 200% 100%; animation: loading 1.5s infinite; margin-right: 12px;"></div>
-                            <div style="flex: 1;">
-                                <div style="height: 20px; width: 150px; background: linear-gradient(90deg, var(--border-dark) 25%, var(--bg-dark) 50%, var(--border-dark) 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 4px;"></div>
-                            </div>
+                        <img src="https://via.placeholder.com/40/10b981/FFFFFF?text=JD" alt="User Avatar" class="user-avatar">
+                        <div>
+                            <span class="post-user">JadeDragon</span>
+                            <span class="post-time">2 hours ago</span>
+                            <span class="post-category">RPG</span>
                         </div>
                     </div>
-                    <div style="height: 24px; width: 80%; background: linear-gradient(90deg, var(--border-dark) 25%, var(--bg-dark) 50%, var(--border-dark) 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 4px; margin-bottom: 10px;"></div>
-                    <div style="height: 16px; width: 100%; background: linear-gradient(90deg, var(--border-dark) 25%, var(--bg-dark) 50%, var(--border-dark) 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 4px; margin-bottom: 5px;"></div>
-                    <div style="height: 16px; width: 90%; background: linear-gradient(90deg, var(--border-dark) 25%, var(--bg-dark) 50%, var(--border-dark) 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 4px;"></div>
+                    <h2 class="post-title">Welcome to Glitch Guild!</h2>
+                    <p class="post-content">This is the ultimate gaming community. Login to start posting!</p>
+                    <div class="post-footer">
+                        <div class="post-actions">
+                            <button class="vote-btn upvote">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>42</span>
+                            </button>
+                            <button class="vote-btn downvote">
+                                <i class="fas fa-arrow-down"></i>
+                            </button>
+                            <button class="comments-btn">
+                                <i class="fas fa-comment"></i>
+                                <span>5</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
@@ -1000,7 +867,11 @@
             <div class="sidebar-section">
                 <h3><i class="fas fa-users"></i> Online Guild Members</h3>
                 <div class="online-users" id="onlineUsers">
-                    <!-- Users will be loaded here -->
+                    <div class="user-item">
+                        <img src="https://via.placeholder.com/35/7c3aed/FFFFFF?text=GG" alt="User Avatar" class="user-avatar-small">
+                        <span>GlitchBot</span>
+                        <div class="user-status"></div>
+                    </div>
                 </div>
             </div>
             
@@ -1021,25 +892,12 @@
                             <div style="font-size: 0.8rem; color: var(--text-muted-dark);">March 17, 9:00 PM EST</div>
                         </div>
                     </div>
-                    <div class="game-tag">
-                        <i class="fas fa-gamepad" style="color: var(--primary);"></i>
-                        <div>
-                            <div style="font-weight: 600;">Indie Game Showcase</div>
-                            <div style="font-size: 0.8rem; color: var(--text-muted-dark);">March 20, 7:00 PM EST</div>
-                        </div>
-                    </div>
                 </div>
             </div>
             
             <div class="sidebar-section">
                 <h3><i class="fas fa-bullhorn"></i> Guild Announcements</h3>
-                <p style="font-size: 0.9rem; margin-bottom: 10px;">Welcome to Glitch Guild v2.0! Now with Firebase integration!</p>
-                <ul class="categories-list">
-                    <li><i class="fas fa-check" style="color: var(--success);"></i> Real-time posts</li>
-                    <li><i class="fas fa-check" style="color: var(--success);"></i> Google login</li>
-                    <li><i class="fas fa-check" style="color: var(--success);"></i> Comment system</li>
-                    <li><i class="fas fa-check" style="color: var(--success);"></i> Live voting</li>
-                </ul>
+                <p style="font-size: 0.9rem; margin-bottom: 10px;">Welcome to Glitch Guild! Login with Google to start posting.</p>
             </div>
         </aside>
     </div>
@@ -1080,7 +938,7 @@
             </div>
         </div>
         <div class="container copyright">
-            &copy; 2023 Glitch Guild. All rights reserved. All game content and trademarks are property of their respective owners.
+            &copy; 2023 Glitch Guild. All rights reserved.
         </div>
     </footer>
 
@@ -1103,29 +961,22 @@
             query, 
             orderBy, 
             serverTimestamp,
-            onSnapshot,
-            doc,
-            updateDoc,
-            increment,
-            getDoc,
-            setDoc,
-            where,
-            limit
+            onSnapshot
         } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
         // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBOT0ozwChf5Y5_j-0zvY6AjYimBi5xXg8",
-            const firebaseConfig = {
-  apiKey: "AIzaSyBOT0ozwChf5Y5_j-0zvY6AjYimBi5xXg8",
-  authDomain: "glitch-guild.firebaseapp.com",  
-  databaseURL: "https://glitch-guild-default-rtdb.firebaseio.com",
-  projectId: "glitch-guild",
-  storageBucket: "glitch-guild.firebasestorage.app",
-  messagingSenderId: "457365673378",
-  appId: "1:457365673378:web:df3ea7a3f563fe9deb0efb"
-};
-  const app = initializeApp(firebaseConfig);
+            authDomain: "glitch-guild.firebaseapp.com",
+            databaseURL: "https://glitch-guild-default-rtdb.firebaseio.com",
+            projectId: "glitch-guild",
+            storageBucket: "glitch-guild.firebasestorage.app",
+            messagingSenderId: "457365673378",
+            appId: "1:457365673378:web:df3ea7a3f563fe9deb0efb"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
@@ -1143,73 +994,48 @@
         const postContent = document.getElementById('postContent');
         const publishPostBtn = document.getElementById('publishPostBtn');
         const postsContainer = document.getElementById('postsContainer');
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
 
         // Login Functions
         async function loginWithGoogle() {
             try {
                 const result = await signInWithPopup(auth, provider);
-                console.log("Logged in:", result.user.displayName);
+                const user = result.user;
+                console.log("Logged in as:", user.displayName);
+                
+                // Update UI
+                userInfo.style.display = 'block';
+                loginBtn.style.display = 'none';
+                userName.textContent = user.displayName;
+                userAvatarHeader.src = user.photoURL || 'https://via.placeholder.com/32/7c3aed/FFFFFF?text=GG';
+                createPostAvatar.src = user.photoURL || 'https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG';
+                
                 loginModal.style.display = 'none';
+                alert('Login successful! Welcome ' + user.displayName);
             } catch (error) {
                 console.error("Login error:", error);
-                alert('Login failed: ' + error.message);
+                alert('Login failed. Please check console for details.');
             }
         }
 
         async function logout() {
             try {
                 await signOut(auth);
-                console.log("Logged out");
+                userInfo.style.display = 'none';
+                loginBtn.style.display = 'flex';
+                createPostAvatar.src = 'https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG';
+                alert('Logged out successfully!');
             } catch (error) {
                 console.error("Logout error:", error);
             }
         }
 
-        function updateUserUI(user) {
-            if (user) {
-                // User is logged in
-                userInfo.style.display = 'block';
-                loginBtn.style.display = 'none';
-                userName.textContent = user.displayName;
-                userAvatarHeader.src = user.photoURL || 'https://via.placeholder.com/32/7c3aed/FFFFFF?text=GG';
-                
-                // Enable post creation
-                postContent.disabled = false;
-                publishPostBtn.disabled = false;
-                createPostAvatar.src = user.photoURL || 'https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG';
-            } else {
-                // User is logged out
-                userInfo.style.display = 'none';
-                loginBtn.style.display = 'flex';
-                
-                // Disable post creation
-                postContent.disabled = true;
-                publishPostBtn.disabled = true;
-                createPostAvatar.src = 'https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG';
-            }
-        }
-
-        // Event Listeners
-        loginBtn.addEventListener('click', () => {
-            loginModal.style.display = 'flex';
-        });
-
-        closeLoginBtn.addEventListener('click', () => {
-            loginModal.style.display = 'none';
-        });
-
-        googleLoginBtn.addEventListener('click', loginWithGoogle);
-        logoutBtn.addEventListener('click', logout);
-
-        // Auth State Listener
-        onAuthStateChanged(auth, (user) => {
-            updateUserUI(user);
-        });
-
         // Post Functions
-        publishPostBtn.addEventListener('click', async () => {
+        async function publishPost() {
             const user = auth.currentUser;
             if (!user) {
+                alert('Please login first!');
                 loginModal.style.display = 'flex';
                 return;
             }
@@ -1221,6 +1047,9 @@
             }
             
             try {
+                publishPostBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Posting...';
+                publishPostBtn.disabled = true;
+                
                 await addDoc(collection(db, 'posts'), {
                     userId: user.uid,
                     userName: user.displayName,
@@ -1234,12 +1063,15 @@
                 });
                 
                 postContent.value = '';
-                alert('Post published!');
+                alert('Post published successfully!');
             } catch (error) {
                 console.error('Error posting:', error);
                 alert('Error: ' + error.message);
+            } finally {
+                publishPostBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Post';
+                publishPostBtn.disabled = false;
             }
-        });
+        }
 
         // Load Posts
         function loadPosts() {
@@ -1250,12 +1082,20 @@
                 postsContainer.innerHTML = '';
                 
                 if (snapshot.empty) {
-                    postsContainer.innerHTML = '<div class="post"><p>No posts yet. Be the first!</p></div>';
+                    postsContainer.innerHTML = `
+                        <div class="post">
+                            <div class="post-content">
+                                <p>No posts yet. Be the first to share something!</p>
+                            </div>
+                        </div>
+                    `;
                     return;
                 }
                 
                 snapshot.forEach((doc) => {
                     const post = doc.data();
+                    const postId = doc.id;
+                    
                     const postElement = document.createElement('div');
                     postElement.className = 'post';
                     postElement.innerHTML = `
@@ -1269,9 +1109,18 @@
                         <p class="post-content">${post.content}</p>
                         <div class="post-footer">
                             <div class="post-actions">
-                                <button class="vote-btn upvote">👍 ${post.upvotes || 0}</button>
-                                <button class="vote-btn downvote">👎 ${post.downvotes || 0}</button>
-                                <button class="comments-btn">💬 ${post.comments || 0}</button>
+                                <button class="vote-btn upvote">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>${post.upvotes || 0}</span>
+                                </button>
+                                <button class="vote-btn downvote">
+                                    <i class="fas fa-arrow-down"></i>
+                                    <span>${post.downvotes || 0}</span>
+                                </button>
+                                <button class="comments-btn">
+                                    <i class="fas fa-comment"></i>
+                                    <span>${post.comments || 0}</span>
+                                </button>
                             </div>
                         </div>
                     `;
@@ -1280,9 +1129,64 @@
             });
         }
 
+        // Event Listeners
+        loginBtn.addEventListener('click', () => {
+            loginModal.style.display = 'flex';
+        });
+
+        closeLoginBtn.addEventListener('click', () => {
+            loginModal.style.display = 'none';
+        });
+
+        googleLoginBtn.addEventListener('click', loginWithGoogle);
+        logoutBtn.addEventListener('click', logout);
+        publishPostBtn.addEventListener('click', publishPost);
+
+        // Enter key to post
+        postContent.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                publishPost();
+            }
+        });
+
+        // Theme Toggle
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            if (document.body.classList.contains('light-mode')) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+
+        // Auth State Listener
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                userInfo.style.display = 'block';
+                loginBtn.style.display = 'none';
+                userName.textContent = user.displayName;
+                userAvatarHeader.src = user.photoURL || 'https://via.placeholder.com/32/7c3aed/FFFFFF?text=GG';
+                createPostAvatar.src = user.photoURL || 'https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG';
+            } else {
+                userInfo.style.display = 'none';
+                loginBtn.style.display = 'flex';
+                createPostAvatar.src = 'https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG';
+            }
+        });
+
         // Initialize
         loadPosts();
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                loginModal.style.display = 'none';
+            }
+        });
+
         console.log("Glitch Guild initialized! 🎮");
     </script>
-
-
+</body>
+</html>
