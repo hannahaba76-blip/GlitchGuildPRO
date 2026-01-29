@@ -510,7 +510,6 @@
             cursor: pointer;
             padding: 5px 10px;
             border-radius: 6px;
-            transition: all 0.2s ease;
         }
 
         body.light-mode .vote-btn {
@@ -527,11 +526,6 @@
 
         .vote-btn.downvote.active {
             color: var(--danger);
-        }
-
-        .vote-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
         }
 
         .comments-btn, .share-btn {
@@ -553,118 +547,6 @@
 
         .comments-btn:hover, .share-btn:hover {
             background-color: rgba(124, 58, 237, 0.1);
-        }
-
-        /* Comment Section Styles */
-        .comments-section {
-            margin-top: 20px;
-            border-top: 1px solid var(--border-dark);
-            padding-top: 20px;
-            display: none;
-        }
-
-        body.light-mode .comments-section {
-            border-top: 1px solid var(--border-light);
-        }
-
-        .add-comment {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .add-comment input {
-            flex: 1;
-            padding: 10px 15px;
-            background-color: rgba(30, 41, 59, 0.5);
-            border: 1px solid var(--border-dark);
-            border-radius: 20px;
-            color: var(--text-dark);
-            font-size: 0.9rem;
-        }
-
-        body.light-mode .add-comment input {
-            background-color: rgba(241, 245, 249, 0.7);
-            border: 1px solid var(--border-light);
-            color: var(--text-light);
-        }
-
-        .comment-btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        .comment-btn:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .comment {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            padding: 15px;
-            background-color: rgba(30, 41, 59, 0.3);
-            border-radius: 10px;
-            border: 1px solid var(--border-dark);
-        }
-
-        body.light-mode .comment {
-            background-color: rgba(241, 245, 249, 0.5);
-            border: 1px solid var(--border-light);
-        }
-
-        .comment-avatar {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .comment-content {
-            flex: 1;
-        }
-
-        .comment-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 5px;
-        }
-
-        .comment-user {
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .comment-time {
-            color: var(--text-muted-dark);
-            font-size: 0.8rem;
-        }
-
-        body.light-mode .comment-time {
-            color: var(--text-muted-light);
-        }
-
-        .comment-text {
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-
-        .no-comments {
-            text-align: center;
-            color: var(--text-muted-dark);
-            font-style: italic;
-            padding: 20px;
-        }
-
-        body.light-mode .no-comments {
-            color: var(--text-muted-light);
         }
 
         /* Right Sidebar Styles */
@@ -950,7 +832,33 @@
             
             <!-- Posts Container -->
             <div id="postsContainer">
-                <!-- Posts will be loaded here -->
+                <div class="post">
+                    <div class="post-header">
+                        <img src="https://via.placeholder.com/40/10b981/FFFFFF?text=JD" alt="User Avatar" class="user-avatar">
+                        <div>
+                            <span class="post-user">JadeDragon</span>
+                            <span class="post-time">2 hours ago</span>
+                            <span class="post-category">RPG</span>
+                        </div>
+                    </div>
+                    <h2 class="post-title">Welcome to Glitch Guild!</h2>
+                    <p class="post-content">This is the ultimate gaming community. Login to start posting!</p>
+                    <div class="post-footer">
+                        <div class="post-actions">
+                            <button class="vote-btn upvote">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>42</span>
+                            </button>
+                            <button class="vote-btn downvote">
+                                <i class="fas fa-arrow-down"></i>
+                            </button>
+                            <button class="comments-btn">
+                                <i class="fas fa-comment"></i>
+                                <span>5</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
 
@@ -1053,14 +961,7 @@
             query, 
             orderBy, 
             serverTimestamp,
-            onSnapshot,
-            updateDoc,
-            doc,
-            increment,
-            getDoc,
-            arrayUnion,
-            arrayRemove,
-            setDoc
+            onSnapshot
         } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
         // Firebase Configuration
@@ -1095,9 +996,6 @@
         const postsContainer = document.getElementById('postsContainer');
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = themeToggle.querySelector('i');
-
-        // Global Variables
-        let userVotes = {}; // Track user votes for each post
 
         // Login Functions
         async function loginWithGoogle() {
@@ -1149,4 +1047,146 @@
             }
             
             try {
-                publishPostBtn.innerHTML = '<i class="
+                publishPostBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Posting...';
+                publishPostBtn.disabled = true;
+                
+                await addDoc(collection(db, 'posts'), {
+                    userId: user.uid,
+                    userName: user.displayName,
+                    userPhoto: user.photoURL,
+                    content: content,
+                    category: 'general',
+                    upvotes: 0,
+                    downvotes: 0,
+                    comments: 0,
+                    createdAt: serverTimestamp()
+                });
+                
+                postContent.value = '';
+                alert('Post published successfully!');
+            } catch (error) {
+                console.error('Error posting:', error);
+                alert('Error: ' + error.message);
+            } finally {
+                publishPostBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Post';
+                publishPostBtn.disabled = false;
+            }
+        }
+
+        // Load Posts
+        function loadPosts() {
+            const postsRef = collection(db, 'posts');
+            const q = query(postsRef, orderBy('createdAt', 'desc'));
+            
+            onSnapshot(q, (snapshot) => {
+                postsContainer.innerHTML = '';
+                
+                if (snapshot.empty) {
+                    postsContainer.innerHTML = `
+                        <div class="post">
+                            <div class="post-content">
+                                <p>No posts yet. Be the first to share something!</p>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                snapshot.forEach((doc) => {
+                    const post = doc.data();
+                    const postId = doc.id;
+                    
+                    const postElement = document.createElement('div');
+                    postElement.className = 'post';
+                    postElement.innerHTML = `
+                        <div class="post-header">
+                            <img src="${post.userPhoto || 'https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG'}" class="user-avatar">
+                            <div>
+                                <span class="post-user">${post.userName}</span>
+                                <span class="post-category">${post.category || 'General'}</span>
+                            </div>
+                        </div>
+                        <p class="post-content">${post.content}</p>
+                        <div class="post-footer">
+                            <div class="post-actions">
+                                <button class="vote-btn upvote">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>${post.upvotes || 0}</span>
+                                </button>
+                                <button class="vote-btn downvote">
+                                    <i class="fas fa-arrow-down"></i>
+                                    <span>${post.downvotes || 0}</span>
+                                </button>
+                                <button class="comments-btn">
+                                    <i class="fas fa-comment"></i>
+                                    <span>${post.comments || 0}</span>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    postsContainer.appendChild(postElement);
+                });
+            });
+        }
+
+        // Event Listeners
+        loginBtn.addEventListener('click', () => {
+            loginModal.style.display = 'flex';
+        });
+
+        closeLoginBtn.addEventListener('click', () => {
+            loginModal.style.display = 'none';
+        });
+
+        googleLoginBtn.addEventListener('click', loginWithGoogle);
+        logoutBtn.addEventListener('click', logout);
+        publishPostBtn.addEventListener('click', publishPost);
+
+        // Enter key to post
+        postContent.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                publishPost();
+            }
+        });
+
+        // Theme Toggle
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            if (document.body.classList.contains('light-mode')) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+
+        // Auth State Listener
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                userInfo.style.display = 'block';
+                loginBtn.style.display = 'none';
+                userName.textContent = user.displayName;
+                userAvatarHeader.src = user.photoURL || 'https://via.placeholder.com/32/7c3aed/FFFFFF?text=GG';
+                createPostAvatar.src = user.photoURL || 'https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG';
+            } else {
+                userInfo.style.display = 'none';
+                loginBtn.style.display = 'flex';
+                createPostAvatar.src = 'https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG';
+            }
+        });
+
+        // Initialize
+        loadPosts();
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                loginModal.style.display = 'none';
+            }
+        });
+
+        console.log("Glitch Guild initialized! 🎮");
+    </script>
+</body>
+</html>
