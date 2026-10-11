@@ -44,6 +44,14 @@
             color: var(--text-light);
         }
 
+        a {
+            text-decoration: none;
+        }
+
+        button, input {
+            font: inherit;
+        }
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -52,7 +60,6 @@
             gap: 30px;
         }
 
-        /* Header Styles */
         header {
             background-color: var(--bg-card-dark);
             border-bottom: 1px solid var(--border-dark);
@@ -138,14 +145,10 @@
             background-color: rgba(124, 58, 237, 0.1);
         }
 
-        /* Login Modal */
         .login-modal {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             background-color: rgba(0, 0, 0, 0.7);
             z-index: 1000;
             align-items: center;
@@ -239,7 +242,6 @@
             background-color: rgba(239, 68, 68, 0.1);
         }
 
-        /* Sidebar Styles */
         .sidebar {
             width: 250px;
             flex-shrink: 0;
@@ -285,7 +287,8 @@
             cursor: pointer;
         }
 
-        .categories-list li:hover, .categories-list li.active {
+        .categories-list li:hover,
+        .categories-list li.active {
             background-color: rgba(124, 58, 237, 0.1);
         }
 
@@ -321,7 +324,6 @@
             object-fit: cover;
         }
 
-        /* Main Content Styles */
         .main-content {
             flex: 1;
             min-width: 0;
@@ -478,14 +480,6 @@
             line-height: 1.6;
         }
 
-        .post-image {
-            width: 100%;
-            max-height: 400px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-
         .post-footer {
             display: flex;
             align-items: center;
@@ -528,7 +522,7 @@
             color: var(--danger);
         }
 
-        .comments-btn, .share-btn {
+        .comments-btn {
             display: flex;
             align-items: center;
             gap: 8px;
@@ -541,15 +535,14 @@
             border-radius: 6px;
         }
 
-        body.light-mode .comments-btn, body.light-mode .share-btn {
+        body.light-mode .comments-btn {
             color: var(--text-muted-light);
         }
 
-        .comments-btn:hover, .share-btn:hover {
+        .comments-btn:hover {
             background-color: rgba(124, 58, 237, 0.1);
         }
 
-        /* Right Sidebar Styles */
         .right-sidebar {
             width: 300px;
             flex-shrink: 0;
@@ -600,7 +593,6 @@
             background-color: var(--text-muted-dark);
         }
 
-        /* Footer Styles */
         footer {
             background-color: var(--bg-card-dark);
             border-top: 1px solid var(--border-dark);
@@ -665,7 +657,6 @@
             color: var(--text-muted-light);
         }
 
-        /* Responsive Styles */
         @media (max-width: 1100px) {
             .right-sidebar {
                 display: none;
@@ -676,17 +667,17 @@
             .container {
                 flex-direction: column;
             }
-            
+
             .sidebar {
                 width: 100%;
                 position: static;
                 height: auto;
             }
-            
+
             .nav-links {
                 display: none;
             }
-            
+
             .header-content {
                 flex-wrap: wrap;
             }
@@ -694,47 +685,49 @@
     </style>
 </head>
 <body>
-    <!-- Login Modal -->
     <div class="login-modal" id="loginModal">
         <div class="login-content">
             <div class="login-header">
                 <h2>Join Glitch Guild</h2>
-                <button class="close-login" id="closeLogin">&times;</button>
+                <button class="close-login" id="closeLogin" type="button">&times;</button>
             </div>
             <p>Login to post, comment, vote, and join the gaming community!</p>
-            <button class="login-btn google" id="googleLoginBtn">
+            <button class="login-btn google" id="googleLoginBtn" type="button">
                 <i class="fab fa-google"></i>
                 Continue with Google
             </button>
         </div>
     </div>
 
-    <!-- Header -->
     <header>
         <div class="container header-content">
             <div class="logo">
                 <i class="fas fa-gamepad"></i>
                 <span>Glitch Guild</span>
             </div>
-            <div class="nav-links">
+
+            <nav class="nav-links" aria-label="Main navigation">
                 <a href="#"><i class="fas fa-home"></i> Home</a>
                 <a href="#"><i class="fas fa-fire"></i> Popular</a>
                 <a href="#"><i class="fas fa-compass"></i> Discover</a>
                 <a href="#"><i class="fas fa-trophy"></i> Tournaments</a>
                 <a href="#"><i class="fas fa-users"></i> Communities</a>
-            </div>
+            </nav>
+
             <div class="user-actions" id="userActions">
-                <button class="theme-toggle" id="themeToggle">
+                <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
                     <i class="fas fa-moon"></i>
                 </button>
+
                 <div id="userInfo" style="display: none;">
                     <div class="user-info">
                         <img src="" alt="User Avatar" class="user-avatar-header" id="userAvatarHeader">
                         <span id="userName"></span>
-                        <button class="logout-btn" id="logoutBtn">Logout</button>
+                        <button class="logout-btn" id="logoutBtn" type="button">Logout</button>
                     </div>
                 </div>
-                <button class="user-profile" id="loginBtn">
+
+                <button class="user-profile" id="loginBtn" type="button" aria-label="Login">
                     <i class="fas fa-user-circle"></i>
                 </button>
             </div>
@@ -742,7 +735,6 @@
     </header>
 
     <div class="container">
-        <!-- Left Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-section">
                 <h3><i class="fas fa-list"></i> Categories</h3>
@@ -773,7 +765,7 @@
                     </li>
                 </ul>
             </div>
-            
+
             <div class="sidebar-section">
                 <h3><i class="fas fa-chart-line"></i> Trending Games</h3>
                 <div class="trending-games">
@@ -799,7 +791,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="sidebar-section">
                 <h3><i class="fas fa-info-circle"></i> Guild Rules</h3>
                 <ul class="categories-list">
@@ -812,57 +804,26 @@
             </div>
         </aside>
 
-        <!-- Main Content -->
         <main class="main-content">
             <div class="create-post">
                 <img src="https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG" alt="User Avatar" class="user-avatar" id="createPostAvatar">
                 <input type="text" id="postContent" placeholder="Share your glitch, tip, or gaming moment...">
-                <button class="post-btn" id="publishPostBtn">
+                <button class="post-btn" id="publishPostBtn" type="button">
                     <i class="fas fa-paper-plane"></i> Post
                 </button>
             </div>
-            
-            <div class="sort-options">
-                <button class="sort-btn active" data-sort="hot">Hot</button>
-                <button class="sort-btn" data-sort="new">New</button>
-                <button class="sort-btn" data-sort="top">Top</button>
-                <button class="sort-btn" data-sort="controversial">Controversial</button>
-                <button class="sort-btn" data-sort="rising">Rising</button>
+
+            <div class="sort-options" aria-label="Post sorting">
+                <button class="sort-btn active" data-sort="hot" type="button">Hot</button>
+                <button class="sort-btn" data-sort="new" type="button">New</button>
+                <button class="sort-btn" data-sort="top" type="button">Top</button>
+                <button class="sort-btn" data-sort="controversial" type="button">Controversial</button>
+                <button class="sort-btn" data-sort="rising" type="button">Rising</button>
             </div>
-            
-            <!-- Posts Container -->
-            <div id="postsContainer">
-                <div class="post">
-                    <div class="post-header">
-                        <img src="https://via.placeholder.com/40/10b981/FFFFFF?text=JD" alt="User Avatar" class="user-avatar">
-                        <div>
-                            <span class="post-user">JadeDragon</span>
-                            <span class="post-time">2 hours ago</span>
-                            <span class="post-category">RPG</span>
-                        </div>
-                    </div>
-                    <h2 class="post-title">Welcome to Glitch Guild!</h2>
-                    <p class="post-content">This is the ultimate gaming community. Login to start posting!</p>
-                    <div class="post-footer">
-                        <div class="post-actions">
-                            <button class="vote-btn upvote">
-                                <i class="fas fa-arrow-up"></i>
-                                <span>42</span>
-                            </button>
-                            <button class="vote-btn downvote">
-                                <i class="fas fa-arrow-down"></i>
-                            </button>
-                            <button class="comments-btn">
-                                <i class="fas fa-comment"></i>
-                                <span>5</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+            <div id="postsContainer"></div>
         </main>
 
-        <!-- Right Sidebar -->
         <aside class="right-sidebar">
             <div class="sidebar-section">
                 <h3><i class="fas fa-users"></i> Online Guild Members</h3>
@@ -874,7 +835,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="sidebar-section">
                 <h3><i class="fas fa-calendar-alt"></i> Upcoming Events</h3>
                 <div class="trending-games">
@@ -894,7 +855,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="sidebar-section">
                 <h3><i class="fas fa-bullhorn"></i> Guild Announcements</h3>
                 <p style="font-size: 0.9rem; margin-bottom: 10px;">Welcome to Glitch Guild! Login with Google to start posting.</p>
@@ -902,13 +863,13 @@
         </aside>
     </div>
 
-    <!-- Footer -->
     <footer>
         <div class="container footer-content">
             <div class="footer-section">
                 <h4>Glitch Guild</h4>
                 <p>The ultimate community for gamers to share, discuss, and connect over everything gaming.</p>
             </div>
+
             <div class="footer-section">
                 <h4>Explore</h4>
                 <ul class="footer-links">
@@ -918,6 +879,7 @@
                     <li><a href="#">Leaderboards</a></li>
                 </ul>
             </div>
+
             <div class="footer-section">
                 <h4>Support</h4>
                 <ul class="footer-links">
@@ -927,6 +889,7 @@
                     <li><a href="#">Privacy Policy</a></li>
                 </ul>
             </div>
+
             <div class="footer-section">
                 <h4>Connect</h4>
                 <ul class="footer-links">
@@ -937,34 +900,33 @@
                 </ul>
             </div>
         </div>
+
         <div class="container copyright">
             &copy; 2023 Glitch Guild. All rights reserved.
         </div>
     </footer>
 
-    <!-- Firebase & App Script -->
     <script type="module">
-        // Import Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-        import { 
-            getAuth, 
-            GoogleAuthProvider, 
-            signInWithPopup, 
-            signOut, 
-            onAuthStateChanged 
+        import {
+            getAuth,
+            GoogleAuthProvider,
+            signInWithPopup,
+            signOut,
+            onAuthStateChanged
         } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-        import { 
-            getFirestore, 
-            collection, 
-            addDoc, 
-            getDocs, 
-            query, 
-            orderBy, 
+        import {
+            getFirestore,
+            collection,
+            addDoc,
+            query,
+            orderBy,
             serverTimestamp,
-            onSnapshot
+            onSnapshot,
+            doc,
+            updateDoc
         } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBOT0ozwChf5Y5_j-0zvY6AjYimBi5xXg8",
             authDomain: "glitch-guild.firebaseapp.com",
@@ -975,256 +937,386 @@
             appId: "1:457365673378:web:df3ea7a3f563fe9deb0efb"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
 
-        // DOM Elements
-        const loginModal = document.getElementById('loginModal');
-        const closeLoginBtn = document.getElementById('closeLogin');
-        const googleLoginBtn = document.getElementById('googleLoginBtn');
-        const loginBtn = document.getElementById('loginBtn');
-        const userInfo = document.getElementById('userInfo');
-        const userName = document.getElementById('userName');
-        const userAvatarHeader = document.getElementById('userAvatarHeader');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const createPostAvatar = document.getElementById('createPostAvatar');
-        const postContent = document.getElementById('postContent');
-        const publishPostBtn = document.getElementById('publishPostBtn');
-        const postsContainer = document.getElementById('postsContainer');
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = themeToggle.querySelector('i');
+        const loginModal = document.getElementById("loginModal");
+        const closeLoginBtn = document.getElementById("closeLogin");
+        const googleLoginBtn = document.getElementById("googleLoginBtn");
+        const loginBtn = document.getElementById("loginBtn");
+        const userInfo = document.getElementById("userInfo");
+        const userName = document.getElementById("userName");
+        const userAvatarHeader = document.getElementById("userAvatarHeader");
+        const logoutBtn = document.getElementById("logoutBtn");
+        const createPostAvatar = document.getElementById("createPostAvatar");
+        const postContent = document.getElementById("postContent");
+        const publishPostBtn = document.getElementById("publishPostBtn");
+        const postsContainer = document.getElementById("postsContainer");
+        const themeToggle = document.getElementById("themeToggle");
+        const themeIcon = themeToggle.querySelector("i");
 
-        // Login Functions
-        async function loginWithGoogle() {
-            try {
-                const result = await signInWithPopup(auth, provider);
-                const user = result.user;
-                console.log("Logged in as:", user.displayName);
-                
-                // Update UI
-                userInfo.style.display = 'block';
-                loginBtn.style.display = 'none';
-                userName.textContent = user.displayName;
-                userAvatarHeader.src = user.photoURL || 'https://via.placeholder.com/32/7c3aed/FFFFFF?text=GG';
-                createPostAvatar.src = user.photoURL || 'https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG';
-                
-                loginModal.style.display = 'none';
-                alert('Login successful! Welcome ' + user.displayName);
-            } catch (error) {
-                console.error("Login error:", error);
-                alert('Login failed. Please check console for details.');
+        const defaultPosts = [
+            {
+                id: "welcome-1",
+                userName: "JadeDragon",
+                userPhoto: "https://via.placeholder.com/40/10b981/FFFFFF?text=JD",
+                category: "RPG",
+                categoryKey: "rpg",
+                title: "Welcome to Glitch Guild!",
+                content: "This is the ultimate gaming community. Login to start posting!",
+                votes: 42,
+                comments: 5,
+                createdAt: Date.now() - 1000 * 60 * 120
+            }
+        ];
+
+        const state = {
+            currentUser: null,
+            selectedCategory: "all",
+            selectedSort: "hot",
+            posts: [...defaultPosts]
+        };
+
+        function formatRelativeTime(timestamp) {
+            if (!timestamp) return "just now";
+            const diff = Date.now() - new Date(timestamp).getTime();
+            const minutes = Math.floor(diff / 60000);
+            if (minutes < 1) return "just now";
+            if (minutes < 60) return `${minutes} min ago`;
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+            const days = Math.floor(hours / 24);
+            return `${days} day${days > 1 ? "s" : ""} ago`;
+        }
+
+        function getDefaultAvatar(name = "GG") {
+            return `https://via.placeholder.com/40/7c3aed/FFFFFF?text=${encodeURIComponent(name.slice(0, 2).toUpperCase())}`;
+        }
+
+        function requireAuth() {
+            if (!state.currentUser) {
+                loginModal.style.display = "flex";
+                return false;
+            }
+            return true;
+        }
+
+        function showLoginModal() {
+            loginModal.style.display = "flex";
+        }
+
+        function hideLoginModal() {
+            loginModal.style.display = "none";
+        }
+
+        function updateThemeUI() {
+            const isLight = document.body.classList.contains("light-mode");
+            themeIcon.classList.remove("fa-moon", "fa-sun");
+            themeIcon.classList.add(isLight ? "fa-sun" : "fa-moon");
+        }
+
+        function updateAuthUI(user) {
+            const loggedIn = !!user;
+
+            userInfo.style.display = loggedIn ? "block" : "none";
+            loginBtn.style.display = loggedIn ? "none" : "flex";
+
+            if (loggedIn) {
+                const displayName = user.displayName || "Guild Member";
+                const avatar = user.photoURL || getDefaultAvatar(displayName);
+
+                userName.textContent = displayName;
+                userAvatarHeader.src = avatar;
+                createPostAvatar.src = avatar;
+
+                if (userInfo) userInfo.style.display = "block";
+            } else {
+                createPostAvatar.src = "https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG";
             }
         }
 
-        async function logout() {
-            try {
-                await signOut(auth);
-                userInfo.style.display = 'none';
-                loginBtn.style.display = 'flex';
-                createPostAvatar.src = 'https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG';
-                alert('Logged out successfully!');
-            } catch (error) {
-                console.error("Logout error:", error);
+        function comparePosts(a, b) {
+            const aTime = new Date(a.createdAt || Date.now()).getTime();
+            const bTime = new Date(b.createdAt || Date.now()).getTime();
+
+            switch (state.selectedSort) {
+                case "new":
+                    return bTime - aTime;
+                case "top":
+                    return (b.votes || 0) - (a.votes || 0);
+                case "controversial":
+                    return (b.comments || 0) + (b.votes || 0) - ((a.comments || 0) + (a.votes || 0));
+                case "rising":
+                    return ((b.votes || 0) + (b.comments || 0) * 2) - ((a.votes || 0) + (a.comments || 0) * 2);
+                case "hot":
+                default:
+                    return ((b.votes || 0) + (b.comments || 0) * 2) - ((a.votes || 0) + (a.comments || 0) * 2);
             }
         }
 
-        // Post Functions
-        async function publishPost() {
-            const user = auth.currentUser;
-            if (!user) {
-                alert('Please login first!');
-                loginModal.style.display = 'flex';
-                return;
+        function getFilteredPosts() {
+            let posts = [...state.posts];
+
+            if (state.selectedCategory !== "all") {
+                posts = posts.filter(post => (post.categoryKey || post.category || "all").toLowerCase() === state.selectedCategory.toLowerCase());
             }
-            
-            const content = postContent.value.trim();
-            if (!content) {
-                alert('Please write something to post!');
-                return;
-            }
-            
-            try {
-                publishPostBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Posting...';
-                publishPostBtn.disabled = true;
-                
-                await addDoc(collection(db, 'posts'), {
-                    userId: user.uid,
-                    userName: user.displayName,
-                    userPhoto: user.photoURL,
-                    content: content,
-                    category: 'general',
-                    upvotes: 0,
-                    downvotes: 0,
-                    comments: 0,
-                    createdAt: serverTimestamp()
-                });
-                
-                postContent.value = '';
-                alert('Post published successfully!');
-            } catch (error) {
-                console.error('Error posting:', error);
-                alert('Error: ' + error.message);
-            } finally {
-                publishPostBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Post';
-                publishPostBtn.disabled = false;
-            }
+
+            return posts.sort(comparePosts);
         }
 
-        // Load Posts
-        function loadPosts() {
-            const postsRef = collection(db, 'posts');
-            const q = query(postsRef, orderBy('createdAt', 'desc'));
-            
-            onSnapshot(q, (snapshot) => {
-                postsContainer.innerHTML = '';
-                
-                if (snapshot.empty) {
-                    postsContainer.innerHTML = `
-                        <div class="post">
-                            <div class="post-content">
-                                <p>No posts yet. Be the first to share something!</p>
-                            </div>
+        function renderPosts() {
+            const posts = getFilteredPosts();
+
+            if (!posts.length) {
+                postsContainer.innerHTML = `
+                    <div class="post">
+                        <div class="post-content">
+                            <p>No posts match this category yet.</p>
                         </div>
-                    `;
-                    return;
-                }
-                
-                snapshot.forEach((doc) => {
-                    const post = doc.data();
-                    const postId = doc.id;
-                    
-                    const postElement = document.createElement('div');
-                    postElement.className = 'post';
-                    postElement.innerHTML = `
+                    </div>
+                `;
+                return;
+            }
+
+            postsContainer.innerHTML = posts.map(post => {
+                const voteValue = Number(post.votes || 0);
+                const commentsValue = Number(post.comments || 0);
+                const category = post.category || "General";
+                const time = formatRelativeTime(post.createdAt || Date.now());
+                const userPhoto = post.userPhoto || getDefaultAvatar(post.userName || "GG");
+
+                return `
+                    <article class="post" data-post-id="${post.id}">
                         <div class="post-header">
-                            <img src="${post.userPhoto || 'https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG'}" class="user-avatar">
+                            <img src="${userPhoto}" alt="User Avatar" class="user-avatar">
                             <div>
-                                <span class="post-user">${post.userName}</span>
-                                <span class="post-category">${post.category || 'General'}</span>
+                                <span class="post-user">${post.userName || "Guild Member"}</span>
+                                <span class="post-time">${time}</span>
+                                <span class="post-category">${category}</span>
                             </div>
                         </div>
-                        <p class="post-content">${post.content}</p>
+                        <h2 class="post-title">${post.title || "Untitled Post"}</h2>
+                        <p class="post-content">${post.content || ""}</p>
+
                         <div class="post-footer">
                             <div class="post-actions">
-                                <button class="vote-btn upvote">
+                                <button class="vote-btn upvote" type="button" data-post-id="${post.id}">
                                     <i class="fas fa-arrow-up"></i>
-                                    <span>${post.upvotes || 0}</span>
+                                    <span>${voteValue}</span>
                                 </button>
-                                <button class="vote-btn downvote">
+
+                                <button class="vote-btn downvote" type="button" data-post-id="${post.id}">
                                     <i class="fas fa-arrow-down"></i>
-                                    <span>${post.downvotes || 0}</span>
                                 </button>
-                                <button class="comments-btn">
+
+                                <button class="comments-btn" type="button" data-post-id="${post.id}">
                                     <i class="fas fa-comment"></i>
-                                    <span>${post.comments || 0}</span>
+                                    <span>${commentsValue}</span>
                                 </button>
                             </div>
                         </div>
-                    `;
-                    postsContainer.appendChild(postElement);
+                    </article>
+                `;
+            }).join("");
+        }
+
+        async function loadPostsFromFirestore() {
+            const postsRef = collection(db, "posts");
+
+            try {
+                const q = query(postsRef, orderBy("createdAt", "desc"));
+                onSnapshot(q, (snapshot) => {
+                    const remotePosts = [];
+
+                    snapshot.forEach((docSnap) => {
+                        const data = docSnap.data();
+
+                        remotePosts.push({
+                            id: docSnap.id,
+                            userName: data.userName || "Guild Member",
+                            userPhoto: data.userPhoto || getDefaultAvatar(data.userName || "GG"),
+                            category: data.category || "General",
+                            categoryKey: data.categoryKey || "general",
+                            title: data.title || "New Post",
+                            content: data.content || "",
+                            votes: Number(data.votes || 0),
+                            comments: Number(data.comments || 0),
+                            createdAt: data.createdAt && data.createdAt.toDate ? data.createdAt.toDate().getTime() : Date.now()
+                        });
+                    });
+
+                    if (remotePosts.length) {
+                        state.posts = remotePosts;
+                        renderPosts();
+                    } else {
+                        state.posts = [...defaultPosts];
+                        renderPosts();
+                    }
                 });
+            } catch (error) {
+                console.warn("Firestore not available, using demo posts:", error);
+                state.posts = [...defaultPosts];
+                renderPosts();
+            }
+        }
+
+        async function publishPost() {
+            if (!requireAuth()) return;
+
+            const content = postContent.value.trim();
+
+            if (!content) {
+                alert("Please write something before posting.");
+                postContent.focus();
+                return;
+            }
+
+            const user = auth.currentUser;
+            const categoryKey = state.selectedCategory === "all" ? "general" : state.selectedCategory;
+            const categoryLabel = {
+                all: "General",
+                fps: "FPS",
+                rpg: "RPG",
+                strategy: "Strategy",
+                sports: "Sports",
+                indie: "Indie",
+                mmo: "MMO",
+                mobile: "Mobile"
+            }[categoryKey] || "General";
+
+            const title = content.length > 60 ? content.slice(0, 60).trim() + "..." : content;
+
+            const newPost = {
+                userName: user.displayName || "Guild Member",
+                userPhoto: user.photoURL || getDefaultAvatar(user.displayName || "GG"),
+                category: categoryLabel,
+                categoryKey,
+                title,
+                content,
+                votes: 0,
+                comments: 0,
+                createdAt: serverTimestamp()
+            };
+
+            try {
+                await addDoc(collection(db, "posts"), newPost);
+                postContent.value = "";
+                postContent.focus();
+            } catch (error) {
+                console.error("Error publishing post:", error);
+                alert("Failed to post. Please try again.");
+            }
+        }
+
+        async function voteOnPost(postId, type) {
+            if (!requireAuth()) return;
+
+            const post = state.posts.find(item => item.id === postId);
+            if (!post) return;
+
+            const updatedVotes = Math.max(0, Number(post.votes || 0) + (type === "upvote" ? 1 : -1));
+
+            try {
+                const postRef = doc(db, "posts", postId);
+                await updateDoc(postRef, {
+                    votes: updatedVotes
+                });
+            } catch (error) {
+                console.warn("Could not update Firestore vote; updating local state instead.", error);
+                post.votes = updatedVotes;
+                renderPosts();
+            }
+        }
+
+        function bindEvents() {
+            loginBtn.addEventListener("click", () => showLoginModal());
+            closeLoginBtn.addEventListener("click", () => hideLoginModal());
+            googleLoginBtn.addEventListener("click", async () => {
+                try {
+                    const result = await signInWithPopup(auth, provider);
+                    const user = result.user;
+                    state.currentUser = user;
+                    updateAuthUI(user);
+                    hideLoginModal();
+                } catch (error) {
+                    console.error("Google login failed:", error);
+                    alert("Login failed. Please try again.");
+                }
+            });
+
+            logoutBtn.addEventListener("click", async () => {
+                try {
+                    await signOut(auth);
+                    state.currentUser = null;
+                    updateAuthUI(null);
+                    hideLoginModal();
+                } catch (error) {
+                    console.error("Logout failed:", error);
+                    alert("Logout failed.");
+                }
+            });
+
+            publishPostBtn.addEventListener("click", publishPost);
+
+            postContent.addEventListener("keydown", (event) => {
+                if (event.key === "Enter") {
+                    publishPost();
+                }
+            });
+
+            window.addEventListener("click", (event) => {
+                if (event.target === loginModal) {
+                    hideLoginModal();
+                }
+            });
+
+            themeToggle.addEventListener("click", () => {
+                document.body.classList.toggle("light-mode");
+                updateThemeUI();
+            });
+
+            document.querySelectorAll(".sort-btn").forEach(button => {
+                button.addEventListener("click", () => {
+                    state.selectedSort = button.dataset.sort;
+                    document.querySelectorAll(".sort-btn").forEach(btn => btn.classList.toggle("active", btn === button));
+                    renderPosts();
+                });
+            });
+
+            document.querySelectorAll(".categories-list li").forEach(item => {
+                item.addEventListener("click", () => {
+                    const button = item;
+                    const category = button.dataset.category || "all";
+
+                    state.selectedCategory = category;
+                    document.querySelectorAll(".categories-list li").forEach(li => {
+                        li.classList.toggle("active", li === button);
+                    });
+                    renderPosts();
+                });
+            });
+
+            postsContainer.addEventListener("click", (event) => {
+                const target = event.target.closest(".vote-btn");
+                if (!target) return;
+
+                const postId = target.dataset.postId;
+                const direction = target.classList.contains("upvote") ? "upvote" : "downvote";
+                voteOnPost(postId, direction);
             });
         }
 
-        // Event Listeners
-        loginBtn.addEventListener('click', () => {
-            loginModal.style.display = 'flex';
-        });
-
-        closeLoginBtn.addEventListener('click', () => {
-            loginModal.style.display = 'none';
-        });
-
-        googleLoginBtn.addEventListener('click', loginWithGoogle);
-        logoutBtn.addEventListener('click', logout);
-        publishPostBtn.addEventListener('click', publishPost);
-
-        // Enter key to post
-        postContent.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                publishPost();
-            }
-        });
-
-        // Theme Toggle
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('light-mode');
-            if (document.body.classList.contains('light-mode')) {
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-            } else {
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
-            }
-        });
-
-        // Auth State Listener
         onAuthStateChanged(auth, (user) => {
-            if (user) {
-                userInfo.style.display = 'block';
-                loginBtn.style.display = 'none';
-                userName.textContent = user.displayName;
-                userAvatarHeader.src = user.photoURL || 'https://via.placeholder.com/32/7c3aed/FFFFFF?text=GG';
-                createPostAvatar.src = user.photoURL || 'https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG';
-            } else {
-                userInfo.style.display = 'none';
-                loginBtn.style.display = 'flex';
-                createPostAvatar.src = 'https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG';
-            }
+            state.currentUser = user;
+            updateAuthUI(user);
+            loadPostsFromFirestore();
         });
 
-        // Initialize
-        loadPosts();
-        
-        // Close modal when clicking outside
-        window.addEventListener('click', (e) => {
-            if (e.target === loginModal) {
-                loginModal.style.display = 'none';
-            }
-        });
-
-        console.log("Glitch Guild initialized! 🎮");
-    const requireAuth = () => {
-  if (!auth.currentUser) {
-    loginModal.style.display = 'flex';
-    return false;
-  }
-  return true;
-};
-
-publishPostBtn.addEventListener('click', async () => {
-  if (!requireAuth()) return;
-
-  const text = postContent.value.trim();
-  if (!text) {
-    postContent.focus();
-    return;
-  }
-
-  try {
-    await addDoc(collection(db, 'posts'), {
-      content: text,
-      author: auth.currentUser.displayName,
-      uid: auth.currentUser.uid,
-      createdAt: serverTimestamp()
-    });
-
-    postContent.value = '';
-  } catch (error) {
-    console.error('Post failed:', error);
-  }
-});
-
-document.querySelectorAll('.vote-btn').forEach(button => {
-  button.addEventListener('click', () => {
-    if (!requireAuth()) return;
-
-    // vote logic here
-  });
-});
+        updateThemeUI();
+        bindEvents();
+        renderPosts();
     </script>
 </body>
 </html>
