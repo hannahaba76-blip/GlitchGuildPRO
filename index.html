@@ -26,11 +26,11 @@
         }
 
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
         }
 
         body {
@@ -48,7 +48,7 @@
             text-decoration: none;
         }
 
-        button, input {
+        button, input, textarea {
             font: inherit;
         }
 
@@ -101,7 +101,6 @@
 
         .nav-links a {
             color: var(--text-dark);
-            text-decoration: none;
             font-weight: 500;
             display: flex;
             align-items: center;
@@ -287,8 +286,7 @@
             cursor: pointer;
         }
 
-        .categories-list li:hover,
-        .categories-list li.active {
+        .categories-list li:hover, .categories-list li.active {
             background-color: rgba(124, 58, 237, 0.1);
         }
 
@@ -493,7 +491,7 @@
             gap: 20px;
         }
 
-        .vote-btn {
+        .vote-btn, .comments-btn {
             display: flex;
             align-items: center;
             gap: 8px;
@@ -506,11 +504,11 @@
             border-radius: 6px;
         }
 
-        body.light-mode .vote-btn {
+        body.light-mode .vote-btn, body.light-mode .comments-btn {
             color: var(--text-muted-light);
         }
 
-        .vote-btn:hover {
+        .vote-btn:hover, .comments-btn:hover {
             background-color: rgba(124, 58, 237, 0.1);
         }
 
@@ -522,25 +520,86 @@
             color: var(--danger);
         }
 
-        .comments-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: none;
-            border: none;
-            color: var(--text-muted-dark);
-            font-size: 1rem;
-            cursor: pointer;
-            padding: 5px 10px;
-            border-radius: 6px;
+        .comments-panel {
+            display: none;
+            margin-top: 20px;
+            border-top: 1px solid var(--border-dark);
+            padding-top: 15px;
         }
 
-        body.light-mode .comments-btn {
+        body.light-mode .comments-panel {
+            border-top-color: var(--border-light);
+        }
+
+        .comments-panel.open {
+            display: block;
+        }
+
+        .comment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .comment-item {
+            background-color: rgba(148, 163, 184, 0.08);
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            border-radius: 10px;
+            padding: 10px 12px;
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            gap: 10px;
+        }
+
+        .comment-user {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .comment-time {
+            font-size: 0.75rem;
+            color: var(--text-muted-dark);
+        }
+
+        body.light-mode .comment-time {
             color: var(--text-muted-light);
         }
 
-        .comments-btn:hover {
-            background-color: rgba(124, 58, 237, 0.1);
+        .comment-form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .comment-form input {
+            flex: 1;
+            background-color: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border-dark);
+            color: var(--text-dark);
+            border-radius: 999px;
+            padding: 10px 14px;
+        }
+
+        body.light-mode .comment-form input {
+            background-color: rgba(241, 245, 249, 0.7);
+            border-color: var(--border-light);
+            color: var(--text-light);
+        }
+
+        .comment-submit {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 999px;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-weight: 600;
         }
 
         .right-sidebar {
@@ -658,29 +717,19 @@
         }
 
         @media (max-width: 1100px) {
-            .right-sidebar {
-                display: none;
-            }
+            .right-sidebar { display: none; }
         }
 
         @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-
+            .container { flex-direction: column; }
             .sidebar {
                 width: 100%;
                 position: static;
                 height: auto;
             }
-
-            .nav-links {
-                display: none;
-            }
-
-            .header-content {
-                flex-wrap: wrap;
-            }
+            .nav-links { display: none; }
+            .header-content { flex-wrap: wrap; }
+            .comment-form { flex-direction: column; align-items: stretch; }
         }
     </style>
 </head>
@@ -739,30 +788,14 @@
             <div class="sidebar-section">
                 <h3><i class="fas fa-list"></i> Categories</h3>
                 <ul class="categories-list">
-                    <li class="active" data-category="all">
-                        <i class="fas fa-globe"></i> All Games
-                    </li>
-                    <li data-category="fps">
-                        <i class="fas fa-crosshairs"></i> FPS
-                    </li>
-                    <li data-category="rpg">
-                        <i class="fas fa-dragon"></i> RPG
-                    </li>
-                    <li data-category="strategy">
-                        <i class="fas fa-chess-board"></i> Strategy
-                    </li>
-                    <li data-category="sports">
-                        <i class="fas fa-futbol"></i> Sports
-                    </li>
-                    <li data-category="indie">
-                        <i class="fas fa-gamepad"></i> Indie
-                    </li>
-                    <li data-category="mmo">
-                        <i class="fas fa-users"></i> MMO
-                    </li>
-                    <li data-category="mobile">
-                        <i class="fas fa-mobile-alt"></i> Mobile
-                    </li>
+                    <li class="active" data-category="all"><i class="fas fa-globe"></i> All Games</li>
+                    <li data-category="fps"><i class="fas fa-crosshairs"></i> FPS</li>
+                    <li data-category="rpg"><i class="fas fa-dragon"></i> RPG</li>
+                    <li data-category="strategy"><i class="fas fa-chess-board"></i> Strategy</li>
+                    <li data-category="sports"><i class="fas fa-futbol"></i> Sports</li>
+                    <li data-category="indie"><i class="fas fa-gamepad"></i> Indie</li>
+                    <li data-category="mmo"><i class="fas fa-users"></i> MMO</li>
+                    <li data-category="mobile"><i class="fas fa-mobile-alt"></i> Mobile</li>
                 </ul>
             </div>
 
@@ -902,153 +935,114 @@
         </div>
 
         <div class="container copyright">
-            &copy; 2023 Glitch Guild. All rights reserved.
+            &copy; 2024 Glitch Guild. All rights reserved.
         </div>
     </footer>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-        import {
-            getAuth,
-            GoogleAuthProvider,
-            signInWithPopup,
-            signOut,
-            onAuthStateChanged
-        } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-        import {
-            getFirestore,
-            collection,
-            addDoc,
-            query,
-            orderBy,
-            serverTimestamp,
-            onSnapshot,
-            doc,
-            updateDoc
-        } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyBOT0ozwChf5Y5_j-0zvY6AjYimBi5xXg8",
-            authDomain: "glitch-guild.firebaseapp.com",
-            databaseURL: "https://glitch-guild-default-rtdb.firebaseio.com",
-            projectId: "glitch-guild",
-            storageBucket: "glitch-guild.firebasestorage.app",
-            messagingSenderId: "457365673378",
-            appId: "1:457365673378:web:df3ea7a3f563fe9deb0efb"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const provider = new GoogleAuthProvider();
-
-        const loginModal = document.getElementById("loginModal");
-        const closeLoginBtn = document.getElementById("closeLogin");
-        const googleLoginBtn = document.getElementById("googleLoginBtn");
-        const loginBtn = document.getElementById("loginBtn");
-        const userInfo = document.getElementById("userInfo");
-        const userName = document.getElementById("userName");
-        const userAvatarHeader = document.getElementById("userAvatarHeader");
-        const logoutBtn = document.getElementById("logoutBtn");
-        const createPostAvatar = document.getElementById("createPostAvatar");
-        const postContent = document.getElementById("postContent");
-        const publishPostBtn = document.getElementById("publishPostBtn");
-        const postsContainer = document.getElementById("postsContainer");
-        const themeToggle = document.getElementById("themeToggle");
-        const themeIcon = themeToggle.querySelector("i");
-
+    <script>
         const defaultPosts = [
             {
-                id: "welcome-1",
-                userName: "JadeDragon",
-                userPhoto: "https://via.placeholder.com/40/10b981/FFFFFF?text=JD",
-                category: "RPG",
-                categoryKey: "rpg",
-                title: "Welcome to Glitch Guild!",
-                content: "This is the ultimate gaming community. Login to start posting!",
+                id: 'welcome-1',
+                userName: 'JadeDragon',
+                userPhoto: 'https://via.placeholder.com/40/10b981/FFFFFF?text=JD',
+                category: 'RPG',
+                categoryKey: 'rpg',
+                title: 'Welcome to Glitch Guild!',
+                content: 'This is the ultimate gaming community. Login to start posting!',
                 votes: 42,
-                comments: 5,
-                createdAt: Date.now() - 1000 * 60 * 120
+                comments: 2,
+                createdAt: Date.now() - 1000 * 60 * 120,
+                openComments: false,
+                commentsList: [
+                    { id: 'c-1', user: 'Mossy', text: 'Love this community already!', createdAt: Date.now() - 1000 * 60 * 50 },
+                    { id: 'c-2', user: 'NightWolf', text: 'Great place to share builds and tips.', createdAt: Date.now() - 1000 * 60 * 30 }
+                ]
             }
         ];
 
         const state = {
             currentUser: null,
-            selectedCategory: "all",
-            selectedSort: "hot",
+            selectedCategory: 'all',
+            selectedSort: 'hot',
             posts: [...defaultPosts]
         };
 
+        const loginModal = document.getElementById('loginModal');
+        const closeLoginBtn = document.getElementById('closeLogin');
+        const googleLoginBtn = document.getElementById('googleLoginBtn');
+        const loginBtn = document.getElementById('loginBtn');
+        const userInfo = document.getElementById('userInfo');
+        const userName = document.getElementById('userName');
+        const userAvatarHeader = document.getElementById('userAvatarHeader');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const createPostAvatar = document.getElementById('createPostAvatar');
+        const postContent = document.getElementById('postContent');
+        const publishPostBtn = document.getElementById('publishPostBtn');
+        const postsContainer = document.getElementById('postsContainer');
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+
         function formatRelativeTime(timestamp) {
-            if (!timestamp) return "just now";
+            if (!timestamp) return 'just now';
             const diff = Date.now() - new Date(timestamp).getTime();
             const minutes = Math.floor(diff / 60000);
-            if (minutes < 1) return "just now";
+            if (minutes < 1) return 'just now';
             if (minutes < 60) return `${minutes} min ago`;
             const hours = Math.floor(minutes / 60);
-            if (hours < 24) return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+            if (hours < 24) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
             const days = Math.floor(hours / 24);
-            return `${days} day${days > 1 ? "s" : ""} ago`;
+            return `${days} day${days > 1 ? 's' : ''} ago`;
         }
 
-        function getDefaultAvatar(name = "GG") {
+        function getDefaultAvatar(name = 'GG') {
             return `https://via.placeholder.com/40/7c3aed/FFFFFF?text=${encodeURIComponent(name.slice(0, 2).toUpperCase())}`;
         }
 
         function requireAuth() {
             if (!state.currentUser) {
-                loginModal.style.display = "flex";
+                loginModal.style.display = 'flex';
                 return false;
             }
             return true;
         }
 
         function showLoginModal() {
-            loginModal.style.display = "flex";
+            loginModal.style.display = 'flex';
         }
 
         function hideLoginModal() {
-            loginModal.style.display = "none";
+            loginModal.style.display = 'none';
         }
 
         function updateThemeUI() {
-            const isLight = document.body.classList.contains("light-mode");
-            themeIcon.classList.remove("fa-moon", "fa-sun");
-            themeIcon.classList.add(isLight ? "fa-sun" : "fa-moon");
+            const isLight = document.body.classList.contains('light-mode');
+            themeIcon.classList.remove('fa-moon', 'fa-sun');
+            themeIcon.classList.add(isLight ? 'fa-sun' : 'fa-moon');
         }
 
         function updateAuthUI(user) {
             const loggedIn = !!user;
-
-            userInfo.style.display = loggedIn ? "block" : "none";
-            loginBtn.style.display = loggedIn ? "none" : "flex";
+            userInfo.style.display = loggedIn ? 'block' : 'none';
+            loginBtn.style.display = loggedIn ? 'none' : 'flex';
 
             if (loggedIn) {
-                const displayName = user.displayName || "Guild Member";
+                const displayName = user.displayName || 'Guild Member';
                 const avatar = user.photoURL || getDefaultAvatar(displayName);
-
                 userName.textContent = displayName;
                 userAvatarHeader.src = avatar;
                 createPostAvatar.src = avatar;
             } else {
-                createPostAvatar.src = "https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG";
+                createPostAvatar.src = 'https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG';
             }
         }
 
         function comparePosts(a, b) {
-            const aTime = new Date(a.createdAt || Date.now()).getTime();
-            const bTime = new Date(b.createdAt || Date.now()).getTime();
-
             switch (state.selectedSort) {
-                case "new":
-                    return bTime - aTime;
-                case "top":
-                    return (b.votes || 0) - (a.votes || 0);
-                case "controversial":
-                    return (b.comments || 0) + (b.votes || 0) - ((a.comments || 0) + (a.votes || 0));
-                case "rising":
-                    return ((b.votes || 0) + (b.comments || 0) * 2) - ((a.votes || 0) + (a.comments || 0) * 2);
-                case "hot":
+                case 'new': return new Date(b.createdAt || Date.now()) - new Date(a.createdAt || Date.now());
+                case 'top': return (b.votes || 0) - (a.votes || 0);
+                case 'controversial': return ((b.comments || 0) + (b.votes || 0)) - ((a.comments || 0) + (a.votes || 0));
+                case 'rising': return ((b.votes || 0) + (b.comments || 0) * 2) - ((a.votes || 0) + (a.comments || 0) * 2);
+                case 'hot':
                 default:
                     return ((b.votes || 0) + (b.comments || 0) * 2) - ((a.votes || 0) + (a.comments || 0) * 2);
             }
@@ -1056,11 +1050,9 @@
 
         function getFilteredPosts() {
             let posts = [...state.posts];
-
-            if (state.selectedCategory !== "all") {
-                posts = posts.filter(post => (post.categoryKey || post.category || "all").toLowerCase() === state.selectedCategory.toLowerCase());
+            if (state.selectedCategory !== 'all') {
+                posts = posts.filter(post => (post.categoryKey || post.category || 'general').toLowerCase() === state.selectedCategory.toLowerCase());
             }
-
             return posts.sort(comparePosts);
         }
 
@@ -1080,23 +1072,31 @@
 
             postsContainer.innerHTML = posts.map(post => {
                 const voteValue = Number(post.votes || 0);
-                const commentsValue = Number(post.comments || 0);
-                const category = post.category || "General";
-                const time = formatRelativeTime(post.createdAt || Date.now());
-                const userPhoto = post.userPhoto || getDefaultAvatar(post.userName || "GG");
+                const commentsValue = Array.isArray(post.commentsList) ? post.commentsList.length : Number(post.comments || 0);
+                const isOpen = !!post.openComments;
+                const commentsMarkup = (post.commentsList || []).map(comment => `
+                    <div class="comment-item">
+                        <div class="comment-header">
+                            <span class="comment-user">${comment.user || 'Guild Member'}</span>
+                            <span class="comment-time">${formatRelativeTime(comment.createdAt || Date.now())}</span>
+                        </div>
+                        <div>${comment.text || ''}</div>
+                    </div>
+                `).join('');
 
                 return `
                     <article class="post" data-post-id="${post.id}">
                         <div class="post-header">
-                            <img src="${userPhoto}" alt="User Avatar" class="user-avatar">
+                            <img src="${post.userPhoto || getDefaultAvatar(post.userName || 'GG')}" alt="User Avatar" class="user-avatar">
                             <div>
-                                <span class="post-user">${post.userName || "Guild Member"}</span>
-                                <span class="post-time">${time}</span>
-                                <span class="post-category">${category}</span>
+                                <div class="post-user">${post.userName || 'Guild Member'}</div>
+                                <div class="post-time">${formatRelativeTime(post.createdAt || Date.now())}</div>
                             </div>
+                            <span class="post-category">${post.category || 'General'}</span>
                         </div>
-                        <h2 class="post-title">${post.title || "Untitled Post"}</h2>
-                        <p class="post-content">${post.content || ""}</p>
+
+                        <h2 class="post-title">${post.title || 'Untitled Post'}</h2>
+                        <p class="post-content">${post.content || ''}</p>
 
                         <div class="post-footer">
                             <div class="post-actions">
@@ -1104,214 +1104,186 @@
                                     <i class="fas fa-arrow-up"></i>
                                     <span>${voteValue}</span>
                                 </button>
-
                                 <button class="vote-btn downvote" type="button" data-post-id="${post.id}">
                                     <i class="fas fa-arrow-down"></i>
                                 </button>
-
                                 <button class="comments-btn" type="button" data-post-id="${post.id}">
                                     <i class="fas fa-comment"></i>
                                     <span>${commentsValue}</span>
                                 </button>
                             </div>
                         </div>
+
+                        <div class="comments-panel ${isOpen ? 'open' : ''}">
+                            <div class="comment-list">
+                                ${commentsMarkup || '<div class="comment-item">No comments yet. Start the discussion.</div>'}
+                            </div>
+                            <div class="comment-form">
+                                <input type="text" class="comment-input" data-post-id="${post.id}" placeholder="Write a comment...">
+                                <button class="comment-submit" type="button" data-post-id="${post.id}">Comment</button>
+                            </div>
+                        </div>
                     </article>
                 `;
-            }).join("");
+            }).join('');
         }
 
-        async function loadPostsFromFirestore() {
-            const postsRef = collection(db, "posts");
-
-            try {
-                const q = query(postsRef, orderBy("createdAt", "desc"));
-                onSnapshot(q, (snapshot) => {
-                    const remotePosts = [];
-
-                    snapshot.forEach((docSnap) => {
-                        const data = docSnap.data();
-
-                        remotePosts.push({
-                            id: docSnap.id,
-                            userName: data.userName || "Guild Member",
-                            userPhoto: data.userPhoto || getDefaultAvatar(data.userName || "GG"),
-                            category: data.category || "General",
-                            categoryKey: data.categoryKey || "general",
-                            title: data.title || "New Post",
-                            content: data.content || "",
-                            votes: Number(data.votes || 0),
-                            comments: Number(data.comments || 0),
-                            createdAt: data.createdAt && data.createdAt.toDate ? data.createdAt.toDate().getTime() : Date.now()
-                        });
-                    });
-
-                    if (remotePosts.length) {
-                        state.posts = remotePosts;
-                        renderPosts();
-                    } else {
-                        state.posts = [...defaultPosts];
-                        renderPosts();
-                    }
-                });
-            } catch (error) {
-                console.warn("Firestore not available, using demo posts:", error);
-                state.posts = [...defaultPosts];
-                renderPosts();
-            }
-        }
-
-        async function publishPost() {
+        function publishPost() {
             if (!requireAuth()) return;
 
             const content = postContent.value.trim();
-
             if (!content) {
-                alert("Please write something before posting.");
+                alert('Please write something before posting.');
                 postContent.focus();
                 return;
             }
 
-            const user = auth.currentUser;
-            const categoryKey = state.selectedCategory === "all" ? "general" : state.selectedCategory;
-            const categoryLabel = {
-                all: "General",
-                fps: "FPS",
-                rpg: "RPG",
-                strategy: "Strategy",
-                sports: "Sports",
-                indie: "Indie",
-                mmo: "MMO",
-                mobile: "Mobile"
-            }[categoryKey] || "General";
-
-            const title = content.length > 60 ? content.slice(0, 60).trim() + "..." : content;
+            const categoryKey = state.selectedCategory === 'all' ? 'general' : state.selectedCategory;
+            const categoryMap = {
+                all: 'General', fps: 'FPS', rpg: 'RPG', strategy: 'Strategy', sports: 'Sports', indie: 'Indie', mmo: 'MMO', mobile: 'Mobile'
+            };
 
             const newPost = {
-                userName: user.displayName || "Guild Member",
-                userPhoto: user.photoURL || getDefaultAvatar(user.displayName || "GG"),
-                category: categoryLabel,
+                id: `post-${Date.now()}`,
+                userName: state.currentUser?.displayName || 'Guild Member',
+                userPhoto: state.currentUser?.photoURL || getDefaultAvatar(state.currentUser?.displayName || 'GG'),
+                category: categoryMap[categoryKey] || 'General',
                 categoryKey,
-                title,
+                title: content.length > 65 ? `${content.slice(0, 62).trim()}...` : content,
                 content,
                 votes: 0,
                 comments: 0,
-                createdAt: serverTimestamp()
+                createdAt: Date.now(),
+                openComments: false,
+                commentsList: []
             };
 
-            try {
-                await addDoc(collection(db, "posts"), newPost);
-                postContent.value = "";
-                postContent.focus();
-            } catch (error) {
-                console.error("Error publishing post:", error);
-                alert("Failed to post. Please try again.");
-            }
+            state.posts.unshift(newPost);
+            postContent.value = '';
+            renderPosts();
         }
 
-        async function voteOnPost(postId, type) {
+        function voteOnPost(postId, direction) {
             if (!requireAuth()) return;
 
             const post = state.posts.find(item => item.id === postId);
             if (!post) return;
 
-            const updatedVotes = Math.max(0, Number(post.votes || 0) + (type === "upvote" ? 1 : -1));
+            const nextVotes = Number(post.votes || 0) + (direction === 'up' ? 1 : -1);
+            post.votes = nextVotes;
+            renderPosts();
+        }
 
-            try {
-                const postRef = doc(db, "posts", postId);
-                await updateDoc(postRef, {
-                    votes: updatedVotes
-                });
-            } catch (error) {
-                console.warn("Could not update Firestore vote; updating local state instead.", error);
-                post.votes = updatedVotes;
-                renderPosts();
-            }
+        function addComment(postId, rawText) {
+            const text = String(rawText || '').trim();
+            if (!text) return;
+
+            const post = state.posts.find(item => item.id === postId);
+            if (!post) return;
+
+            if (!post.commentsList) post.commentsList = [];
+
+            post.commentsList.push({
+                id: `comment-${Date.now()}`,
+                user: state.currentUser?.displayName || 'Guild Member',
+                text,
+                createdAt: Date.now()
+            });
+
+            post.comments = post.commentsList.length;
+            post.openComments = true;
+            renderPosts();
         }
 
         function bindEvents() {
-            loginBtn.addEventListener("click", () => showLoginModal());
-            closeLoginBtn.addEventListener("click", () => hideLoginModal());
-            googleLoginBtn.addEventListener("click", async () => {
-                try {
-                    const result = await signInWithPopup(auth, provider);
-                    const user = result.user;
-                    state.currentUser = user;
-                    updateAuthUI(user);
-                    hideLoginModal();
-                } catch (error) {
-                    console.error("Google login failed:", error);
-                    alert("Login failed. Please try again.");
-                }
+            closeLoginBtn.addEventListener('click', hideLoginModal);
+            googleLoginBtn.addEventListener('click', () => {
+                state.currentUser = {
+                    displayName: 'Guest Gamer',
+                    photoURL: 'https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG'
+                };
+                updateAuthUI(state.currentUser);
+                hideLoginModal();
             });
 
-            logoutBtn.addEventListener("click", async () => {
-                try {
-                    await signOut(auth);
-                    state.currentUser = null;
-                    updateAuthUI(null);
-                    hideLoginModal();
-                } catch (error) {
-                    console.error("Logout failed:", error);
-                    alert("Logout failed.");
-                }
+            loginBtn.addEventListener('click', showLoginModal);
+            logoutBtn.addEventListener('click', () => {
+                state.currentUser = null;
+                updateAuthUI(null);
             });
 
-            publishPostBtn.addEventListener("click", publishPost);
-
-            postContent.addEventListener("keydown", (event) => {
-                if (event.key === "Enter") {
-                    publishPost();
-                }
+            publishPostBtn.addEventListener('click', publishPost);
+            postContent.addEventListener('keydown', event => {
+                if (event.key === 'Enter') publishPost();
             });
 
-            window.addEventListener("click", (event) => {
-                if (event.target === loginModal) {
-                    hideLoginModal();
-                }
-            });
-
-            themeToggle.addEventListener("click", () => {
-                document.body.classList.toggle("light-mode");
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('light-mode');
                 updateThemeUI();
             });
 
-            document.querySelectorAll(".sort-btn").forEach(button => {
-                button.addEventListener("click", () => {
-                    state.selectedSort = button.dataset.sort;
-                    document.querySelectorAll(".sort-btn").forEach(btn => btn.classList.toggle("active", btn === button));
+            document.querySelectorAll('.sort-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    state.selectedSort = button.dataset.sort || 'hot';
+                    document.querySelectorAll('.sort-btn').forEach(btn => btn.classList.toggle('active', btn === button));
                     renderPosts();
                 });
             });
 
-            document.querySelectorAll(".categories-list li").forEach(item => {
-                item.addEventListener("click", () => {
-                    const category = item.dataset.category || "all";
-
-                    state.selectedCategory = category;
-                    document.querySelectorAll(".categories-list li").forEach(li => {
-                        li.classList.toggle("active", li === item);
-                    });
+            document.querySelectorAll('.categories-list li').forEach(item => {
+                item.addEventListener('click', () => {
+                    state.selectedCategory = item.dataset.category || 'all';
+                    document.querySelectorAll('.categories-list li').forEach(li => li.classList.toggle('active', li === item));
                     renderPosts();
                 });
             });
 
-            postsContainer.addEventListener("click", (event) => {
-                const target = event.target.closest(".vote-btn");
-                if (!target) return;
+            postsContainer.addEventListener('click', (event) => {
+                const voteBtn = event.target.closest('.vote-btn.upvote');
+                if (voteBtn) {
+                    voteOnPost(voteBtn.dataset.postId, 'up');
+                    return;
+                }
 
-                const postId = target.dataset.postId;
-                const direction = target.classList.contains("upvote") ? "upvote" : "downvote";
-                voteOnPost(postId, direction);
+                const downVoteBtn = event.target.closest('.vote-btn.downvote');
+                if (downVoteBtn) {
+                    voteOnPost(downVoteBtn.dataset.postId, 'down');
+                    return;
+                }
+
+                const commentBtn = event.target.closest('.comments-btn');
+                if (commentBtn) {
+                    const postId = commentBtn.dataset.postId;
+                    state.posts = state.posts.map(post => post.id === postId ? { ...post, openComments: !post.openComments } : post);
+                    renderPosts();
+                    return;
+                }
+
+                const commentSubmit = event.target.closest('.comment-submit');
+                if (commentSubmit) {
+                    const postId = commentSubmit.dataset.postId;
+                    const input = postsContainer.querySelector(`.comment-input[data-post-id="${postId}"]`);
+                    addComment(postId, input ? input.value : '');
+                    if (input) input.value = '';
+                    return;
+                }
+            });
+
+            postsContainer.addEventListener('keydown', (event) => {
+                if (event.target.matches('.comment-input') && event.key === 'Enter') {
+                    const postId = event.target.dataset.postId;
+                    addComment(postId, event.target.value);
+                    event.target.value = '';
+                }
+            });
+
+            window.addEventListener('click', (event) => {
+                if (event.target === loginModal) hideLoginModal();
             });
         }
 
-        onAuthStateChanged(auth, (user) => {
-            state.currentUser = user;
-            updateAuthUI(user);
-            loadPostsFromFirestore();
-        });
-
         updateThemeUI();
+        updateAuthUI(state.currentUser);
         bindEvents();
         renderPosts();
     </script>
