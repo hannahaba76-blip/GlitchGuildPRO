@@ -1187,6 +1187,44 @@
         });
 
         console.log("Glitch Guild initialized! 🎮");
+    const requireAuth = () => {
+  if (!auth.currentUser) {
+    loginModal.style.display = 'flex';
+    return false;
+  }
+  return true;
+};
+
+publishPostBtn.addEventListener('click', async () => {
+  if (!requireAuth()) return;
+
+  const text = postContent.value.trim();
+  if (!text) {
+    postContent.focus();
+    return;
+  }
+
+  try {
+    await addDoc(collection(db, 'posts'), {
+      content: text,
+      author: auth.currentUser.displayName,
+      uid: auth.currentUser.uid,
+      createdAt: serverTimestamp()
+    });
+
+    postContent.value = '';
+  } catch (error) {
+    console.error('Post failed:', error);
+  }
+});
+
+document.querySelectorAll('.vote-btn').forEach(button => {
+  button.addEventListener('click', () => {
+    if (!requireAuth()) return;
+
+    // vote logic here
+  });
+});
     </script>
 </body>
 </html>
