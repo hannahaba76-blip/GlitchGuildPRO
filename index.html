@@ -642,6 +642,9 @@
     </div>
   </div>
 
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
   <script>
     const STORAGE_KEY = 'glitchGuildUser';
     const POST_KEY = 'glitchGuildPosts';
@@ -689,6 +692,26 @@
     const themeToggle = document.getElementById('themeToggle');
     const themeIcon = themeToggle.querySelector('i');
     const displayNameInput = document.getElementById('displayNameInput');
+
+    const firebaseConfig = {
+      apiKey: 'REPLACE_WITH_YOUR_FIREBASE_API_KEY',
+      authDomain: 'REPLACE_WITH_YOUR_PROJECT.firebaseapp.com',
+      projectId: 'REPLACE_WITH_YOUR_PROJECT_ID',
+      storageBucket: 'REPLACE_WITH_YOUR_PROJECT.appspot.com',
+      messagingSenderId: 'REPLACE_WITH_YOUR_MESSAGING_SENDER_ID',
+      appId: 'REPLACE_WITH_YOUR_APP_ID'
+    };
+
+    let firebaseAuth = null;
+
+    if (typeof firebase !== 'undefined') {
+      try {
+        firebase.initializeApp(firebaseConfig);
+        firebaseAuth = firebase.auth();
+      } catch (error) {
+        console.warn('Firebase init skipped:', error);
+      }
+    }
 
     function loadPosts() {
       try {
@@ -931,16 +954,51 @@
       renderPosts();
     }
 
+    function handleGoogleLogin() {
+      if (!firebaseAuth) {
+        alert('Google login is not configured yet. Add your Firebase config to index.html.');
+        return;
+      }
+
+      const provider = new firebase.auth.GoogleAuthProvider();
+      firebaseAuth.signInWithPopup(provider)
+        .then((result) => {
+          const user = result.user;
+          const signedInUser = {
+            displayName: user.displayName || user.email?.split('@')[0] || 'Google User',
+            photoURL: user.photoURL || getDefaultAvatar(user.displayName || 'Google User'),
+            googleId: user.uid
+          };
+
+          state.currentUser = signedInUser;
+          saveCurrentUser(signedInUser);
+          updateAuthUI(signedInUser);
+          hideLoginModal();
+        })
+        .catch((error) => {
+          console.error('Google sign-in failed:', error);
+          alert('Google sign-in failed: ' + (error.message || 'Unknown error'));
+        });
+    }
+
     function bindEvents() {
       closeLoginBtn.addEventListener('click', hideLoginModal);
-      googleLoginBtn.addEventListener('click', () => loginWithName(displayNameInput.value || 'Google User'));
+      googleLoginBtn.addEventListener('click', handleGoogleLogin);
       guestLoginBtn.addEventListener('click', () => loginWithName(displayNameInput.value));
       displayNameInput.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') loginWithName(displayNameInput.value);
       });
 
       loginBtn.addEventListener('click', showLoginModal);
-      logoutBtn.addEventListener('click', () => {
+      logoutBtn.addEventListener('click', async () => {
+        if (firebaseAuth) {
+          try {
+            await firebaseAuth.signOut();
+          } catch (error) {
+            console.warn('Firebase sign-out error:', error);
+          }
+        }
+
         state.currentUser = null;
         saveCurrentUser(null);
         updateAuthUI(null);
@@ -998,8 +1056,11 @@
         if (commentSubmit) {
           const postId = commentSubmit.dataset.postId;
           const input = postsContainer.querySelector(`.comment-input[data-post-id="${postId}"]`);
-          addComment(postId, input ? input.value : '');
-          if (input) input.value = '';
+          if (input) {
+            addComment(postId, input.value);
+            input.value = '';
+          }
+          return;
         }
       });
 
@@ -1011,16 +1072,42 @@
         }
       });
 
-      window.addEventListener('click', (event) => {
-        if (event.target === loginModal) hideLoginModal();
-      });
+      if (firebaseAuth) {
+        firebaseAuth.onAuthStateChanged((user) => {
+          if (user) {
+            const signedInUser = {
+              displayName: user.displayName || user.email?.split('@')[0] || 'Google User',
+              photoURL: user.photoURL || getDefaultAvatar(user.displayName || 'Google User'),
+              googleId: user.uid
+            };
+
+            state.currentUser = signedInUser;
+            saveCurrentUser(signedInUser);
+            updateAuthUI(signedInUser);
+          } else {
+            const savedUser = loadCurrentUser();
+            if (savedUser) {
+              state.currentUser = savedUser;
+              updateAuthUI(savedUser);
+            } else {
+              state.currentUser = null;
+              updateAuthUI(null);
+            }
+          }
+        });
+      }
     }
 
-    state.currentUser = loadCurrentUser();
-    updateThemeUI();
-    updateAuthUI(state.currentUser);
     bindEvents();
+    updateThemeUI();
     renderPosts();
+    const savedUser = loadCurrentUser();
+    if (savedUser) {
+      state.currentUser = savedUser;
+      updateAuthUI(savedUser);
+    } else {
+      updateAuthUI(null);
+    }
   </script>
 </body>
 </html>
