@@ -1030,8 +1030,6 @@
                 userName.textContent = displayName;
                 userAvatarHeader.src = avatar;
                 createPostAvatar.src = avatar;
-
-                if (userInfo) userInfo.style.display = "block";
             } else {
                 createPostAvatar.src = "https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG";
             }
@@ -1287,12 +1285,11 @@
 
             document.querySelectorAll(".categories-list li").forEach(item => {
                 item.addEventListener("click", () => {
-                    const button = item;
-                    const category = button.dataset.category || "all";
+                    const category = item.dataset.category || "all";
 
                     state.selectedCategory = category;
                     document.querySelectorAll(".categories-list li").forEach(li => {
-                        li.classList.toggle("active", li === button);
+                        li.classList.toggle("active", li === item);
                     });
                     renderPosts();
                 });
