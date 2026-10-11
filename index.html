@@ -1,1329 +1,1026 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glitch Guild - Gaming Community</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #7c3aed;
-            --primary-dark: #5b21b6;
-            --secondary: #10b981;
-            --bg-dark: #0f172a;
-            --bg-card-dark: #1e293b;
-            --text-dark: #f1f5f9;
-            --text-muted-dark: #94a3b8;
-            --border-dark: #334155;
-            --bg-light: #f8fafc;
-            --bg-card-light: #ffffff;
-            --text-light: #1e293b;
-            --text-muted-light: #64748b;
-            --border-light: #e2e8f0;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-dark);
-            line-height: 1.6;
-        }
-
-        body.light-mode {
-            background-color: var(--bg-light);
-            color: var(--text-light);
-        }
-
-        a {
-            text-decoration: none;
-        }
-
-        button, input, textarea {
-            font: inherit;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            gap: 30px;
-        }
-
-        header {
-            background-color: var(--bg-card-dark);
-            border-bottom: 1px solid var(--border-dark);
-            padding: 15px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        body.light-mode header {
-            background-color: var(--bg-card-light);
-            border-bottom: 1px solid var(--border-light);
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .logo i {
-            font-size: 2rem;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 25px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: var(--text-dark);
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
-            border-radius: 6px;
-        }
-
-        body.light-mode .nav-links a {
-            color: var(--text-light);
-        }
-
-        .nav-links a:hover {
-            background-color: rgba(124, 58, 237, 0.1);
-        }
-
-        .user-actions {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .theme-toggle, .user-profile {
-            background: none;
-            border: none;
-            color: var(--text-dark);
-            font-size: 1.3rem;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        body.light-mode .theme-toggle, body.light-mode .user-profile {
-            color: var(--text-light);
-        }
-
-        .theme-toggle:hover, .user-profile:hover {
-            background-color: rgba(124, 58, 237, 0.1);
-        }
-
-        .login-modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .login-content {
-            background-color: var(--bg-card-dark);
-            padding: 30px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 400px;
-            border: 1px solid var(--border-dark);
-        }
-
-        body.light-mode .login-content {
-            background-color: var(--bg-card-light);
-            border: 1px solid var(--border-light);
-        }
-
-        .login-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .close-login {
-            background: none;
-            border: none;
-            color: var(--text-dark);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        .login-btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .login-btn:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .login-btn.google {
-            background-color: #4285F4;
-        }
-
-        .login-btn.google:hover {
-            background-color: #3367D6;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 12px;
-            background-color: rgba(124, 58, 237, 0.1);
-            border-radius: 20px;
-        }
-
-        .user-avatar-header {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .logout-btn {
-            background: none;
-            border: none;
-            color: var(--danger);
-            cursor: pointer;
-            padding: 5px 10px;
-            border-radius: 6px;
-        }
-
-        .logout-btn:hover {
-            background-color: rgba(239, 68, 68, 0.1);
-        }
-
-        .sidebar {
-            width: 250px;
-            flex-shrink: 0;
-            position: sticky;
-            top: 90px;
-            height: calc(100vh - 120px);
-            overflow-y: auto;
-        }
-
-        .sidebar-section {
-            background-color: var(--bg-card-dark);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border-dark);
-        }
-
-        body.light-mode .sidebar-section {
-            background-color: var(--bg-card-light);
-            border: 1px solid var(--border-light);
-        }
-
-        .sidebar h3 {
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .categories-list {
-            list-style: none;
-        }
-
-        .categories-list li {
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .categories-list li:hover, .categories-list li.active {
-            background-color: rgba(124, 58, 237, 0.1);
-        }
-
-        .categories-list li i {
-            width: 20px;
-            text-align: center;
-        }
-
-        .trending-games {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .game-tag {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            background-color: rgba(30, 41, 59, 0.5);
-            border-radius: 8px;
-            font-size: 0.9rem;
-        }
-
-        body.light-mode .game-tag {
-            background-color: rgba(241, 245, 249, 0.7);
-        }
-
-        .game-tag img {
-            width: 30px;
-            height: 30px;
-            border-radius: 6px;
-            object-fit: cover;
-        }
-
-        .main-content {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .create-post {
-            background-color: var(--bg-card-dark);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border-dark);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        body.light-mode .create-post {
-            background-color: var(--bg-card-light);
-            border: 1px solid var(--border-light);
-        }
-
-        .create-post input {
-            flex: 1;
-            padding: 12px 20px;
-            background-color: rgba(30, 41, 59, 0.5);
-            border: 1px solid var(--border-dark);
-            border-radius: 30px;
-            color: var(--text-dark);
-            font-size: 1rem;
-        }
-
-        body.light-mode .create-post input {
-            background-color: rgba(241, 245, 249, 0.7);
-            border: 1px solid var(--border-light);
-            color: var(--text-light);
-        }
-
-        .create-post input::placeholder {
-            color: var(--text-muted-dark);
-        }
-
-        body.light-mode .create-post input::placeholder {
-            color: var(--text-muted-light);
-        }
-
-        .post-btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .post-btn:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .sort-options {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .sort-btn {
-            background-color: var(--bg-card-dark);
-            color: var(--text-dark);
-            border: 1px solid var(--border-dark);
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        body.light-mode .sort-btn {
-            background-color: var(--bg-card-light);
-            color: var(--text-light);
-            border: 1px solid var(--border-light);
-        }
-
-        .sort-btn.active {
-            background-color: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        .post {
-            background-color: var(--bg-card-dark);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border-dark);
-        }
-
-        body.light-mode .post {
-            background-color: var(--bg-card-light);
-            border: 1px solid var(--border-light);
-        }
-
-        .post-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 12px;
-            object-fit: cover;
-        }
-
-        .post-user {
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .post-time {
-            color: var(--text-muted-dark);
-            font-size: 0.85rem;
-            margin-left: 5px;
-        }
-
-        body.light-mode .post-time {
-            color: var(--text-muted-light);
-        }
-
-        .post-category {
-            background-color: rgba(124, 58, 237, 0.1);
-            color: var(--primary);
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            margin-left: 10px;
-            font-weight: 500;
-        }
-
-        .post-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            line-height: 1.4;
-        }
-
-        .post-content {
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-
-        .post-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 15px;
-        }
-
-        .post-actions {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .vote-btn, .comments-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: none;
-            border: none;
-            color: var(--text-muted-dark);
-            font-size: 1rem;
-            cursor: pointer;
-            padding: 5px 10px;
-            border-radius: 6px;
-        }
-
-        body.light-mode .vote-btn, body.light-mode .comments-btn {
-            color: var(--text-muted-light);
-        }
-
-        .vote-btn:hover, .comments-btn:hover {
-            background-color: rgba(124, 58, 237, 0.1);
-        }
-
-        .vote-btn.upvote.active {
-            color: var(--success);
-        }
-
-        .vote-btn.downvote.active {
-            color: var(--danger);
-        }
-
-        .comments-panel {
-            display: none;
-            margin-top: 20px;
-            border-top: 1px solid var(--border-dark);
-            padding-top: 15px;
-        }
-
-        body.light-mode .comments-panel {
-            border-top-color: var(--border-light);
-        }
-
-        .comments-panel.open {
-            display: block;
-        }
-
-        .comment-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .comment-item {
-            background-color: rgba(148, 163, 184, 0.08);
-            border: 1px solid rgba(148, 163, 184, 0.18);
-            border-radius: 10px;
-            padding: 10px 12px;
-        }
-
-        .comment-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 6px;
-            gap: 10px;
-        }
-
-        .comment-user {
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
-
-        .comment-time {
-            font-size: 0.75rem;
-            color: var(--text-muted-dark);
-        }
-
-        body.light-mode .comment-time {
-            color: var(--text-muted-light);
-        }
-
-        .comment-form {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .comment-form input {
-            flex: 1;
-            background-color: rgba(30, 41, 59, 0.5);
-            border: 1px solid var(--border-dark);
-            color: var(--text-dark);
-            border-radius: 999px;
-            padding: 10px 14px;
-        }
-
-        body.light-mode .comment-form input {
-            background-color: rgba(241, 245, 249, 0.7);
-            border-color: var(--border-light);
-            color: var(--text-light);
-        }
-
-        .comment-submit {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 999px;
-            padding: 10px 16px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .right-sidebar {
-            width: 300px;
-            flex-shrink: 0;
-            position: sticky;
-            top: 90px;
-            height: calc(100vh - 120px);
-            overflow-y: auto;
-        }
-
-        .online-users {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .user-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px;
-            border-radius: 8px;
-        }
-
-        .user-item:hover {
-            background-color: rgba(124, 58, 237, 0.1);
-        }
-
-        .user-avatar-small {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .user-status {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: var(--success);
-            margin-left: auto;
-        }
-
-        .user-status.away {
-            background-color: var(--warning);
-        }
-
-        .user-status.offline {
-            background-color: var(--text-muted-dark);
-        }
-
-        footer {
-            background-color: var(--bg-card-dark);
-            border-top: 1px solid var(--border-dark);
-            padding: 30px 0;
-            margin-top: 40px;
-        }
-
-        body.light-mode footer {
-            background-color: var(--bg-card-light);
-            border-top: 1px solid var(--border-light);
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 30px;
-        }
-
-        .footer-section {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .footer-section h4 {
-            margin-bottom: 15px;
-            color: var(--primary);
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 10px;
-        }
-
-        .footer-links a {
-            color: var(--text-muted-dark);
-            text-decoration: none;
-        }
-
-        body.light-mode .footer-links a {
-            color: var(--text-muted-light);
-        }
-
-        .footer-links a:hover {
-            color: var(--primary);
-        }
-
-        .copyright {
-            text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-dark);
-            color: var(--text-muted-dark);
-            font-size: 0.9rem;
-        }
-
-        body.light-mode .copyright {
-            border-top: 1px solid var(--border-light);
-            color: var(--text-muted-light);
-        }
-
-        @media (max-width: 1100px) {
-            .right-sidebar { display: none; }
-        }
-
-        @media (max-width: 768px) {
-            .container { flex-direction: column; }
-            .sidebar {
-                width: 100%;
-                position: static;
-                height: auto;
-            }
-            .nav-links { display: none; }
-            .header-content { flex-wrap: wrap; }
-            .comment-form { flex-direction: column; align-items: stretch; }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glitch Guild - Gaming Community</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-card: #1e293b;
+      --bg-soft: rgba(148, 163, 184, 0.08);
+      --primary: #7c3aed;
+      --primary-dark: #5b21b6;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --border: #334155;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --white: #ffffff;
+      --shadow: rgba(15, 23, 42, 0.5);
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a { text-decoration: none; }
+    button, input { font: inherit; }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 72px;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      color: var(--primary);
+      font-size: 1.8rem;
+    }
+
+    .brand i {
+      font-size: 2rem;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: var(--text);
+    }
+
+    .nav a {
+      color: var(--text);
+      opacity: 0.9;
+      padding: 8px 12px;
+      border-radius: 8px;
+    }
+
+    .nav a:hover {
+      background: rgba(124, 58, 237, 0.12);
+    }
+
+    .user-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-toggle,
+    .user-profile,
+    .logout-btn,
+    .close-login,
+    .vote-btn,
+    .comments-btn,
+    .comment-submit,
+    .post-btn,
+    .login-btn,
+    .sort-btn {
+      cursor: pointer;
+    }
+
+    .theme-toggle,
+    .user-profile {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: rgba(124, 58, 237, 0.12);
+      border: 1px solid rgba(124, 58, 237, 0.3);
+      border-radius: 999px;
+    }
+
+    .user-avatar-header,
+    .user-avatar,
+    .user-avatar-small {
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .user-avatar-header {
+      width: 32px;
+      height: 32px;
+    }
+
+    .logout-btn {
+      border: none;
+      background: transparent;
+      color: var(--danger);
+      font-weight: 600;
+    }
+
+    .page {
+      max-width: 1280px;
+      margin: 24px auto 0;
+      display: grid;
+      grid-template-columns: 250px minmax(0, 1fr) 280px;
+      gap: 24px;
+      padding: 0 20px 48px;
+    }
+
+    .sidebar-section,
+    .create-post,
+    .post,
+    .login-content {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 12px 40px var(--shadow);
+    }
+
+    .sidebar-section {
+      padding: 18px;
+      margin-bottom: 20px;
+    }
+
+    .sidebar-section h3 {
+      margin: 0 0 14px;
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+
+    .categories-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .categories-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      color: var(--text);
+    }
+
+    .categories-list li:hover,
+    .categories-list li.active {
+      background: rgba(124, 58, 237, 0.12);
+    }
+
+    .trending-games {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .game-tag {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      background: rgba(148, 163, 184, 0.08);
+      border-radius: 10px;
+    }
+
+    .game-tag img {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .create-post {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 20px;
+      margin-bottom: 20px;
+    }
+
+    .user-avatar {
+      width: 42px;
+      height: 42px;
+      margin-right: 4px;
+    }
+
+    #postContent {
+      flex: 1;
+      padding: 12px 18px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text);
+      min-width: 0;
+    }
+
+    #postContent::placeholder {
+      color: var(--muted);
+    }
+
+    .post-btn {
+      border: none;
+      background: var(--primary);
+      color: var(--white);
+      padding: 12px 18px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    .post-btn:hover { background: var(--primary-dark); }
+
+    .sort-options {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .sort-btn {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text);
+    }
+
+    .sort-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: var(--white);
+    }
+
+    .post {
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .post-user {
+      font-weight: 700;
+    }
+
+    .post-time {
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .post-category {
+      margin-left: auto;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(124, 58, 237, 0.14);
+      color: var(--primary);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .post-title {
+      font-size: 1.3rem;
+      margin: 0 0 12px;
+    }
+
+    .post-content {
+      margin: 0 0 18px;
+      color: var(--text);
+    }
+
+    .post-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+    }
+
+    .post-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .vote-btn,
+    .comments-btn {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 8px;
+    }
+
+    .vote-btn:hover,
+    .comments-btn:hover { background: rgba(124, 58, 237, 0.08); }
+
+    .vote-btn.upvote.active { color: var(--success); }
+    .vote-btn.downvote.active { color: var(--danger); }
+
+    .comments-panel {
+      display: none;
+      margin-top: 16px;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+
+    .comments-panel.open { display: block; }
+
+    .comment-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .comment-item {
+      background: var(--bg-soft);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+
+    .comment-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      gap: 10px;
+    }
+
+    .comment-user {
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .comment-time {
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+
+    .comment-form {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .comment-form input {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.6);
+      color: var(--text);
+    }
+
+    .comment-submit {
+      border: none;
+      background: var(--primary);
+      color: var(--white);
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+
+    .online-users {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .user-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px;
+      border-radius: 10px;
+      background: rgba(148, 163, 184, 0.05);
+    }
+
+    .user-avatar-small {
+      width: 35px;
+      height: 35px;
+    }
+
+    .user-status {
+      width: 10px;
+      height: 10px;
+      background: var(--success);
+      border-radius: 50%;
+      margin-left: auto;
+    }
+
+    .login-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.8);
+      z-index: 50;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-content {
+      width: min(100%, 420px);
+      padding: 28px 24px;
+    }
+
+    .login-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .close-login {
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .login-intro {
+      margin-bottom: 18px;
+      color: var(--muted);
+    }
+
+    #displayNameInput {
+      width: 100%;
+      margin-bottom: 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.6);
+      color: var(--text);
+    }
+
+    .login-btn {
+      width: 100%;
+      margin-top: 10px;
+      border: none;
+      background: var(--primary);
+      color: var(--white);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-weight: 700;
+    }
+
+    .login-btn.google { background: #4285F4; }
+
+    @media (max-width: 1050px) {
+      .page { grid-template-columns: 220px minmax(0, 1fr); }
+      .right-sidebar { display: none; }
+    }
+
+    @media (max-width: 760px) {
+      .page { grid-template-columns: 1fr; }
+      .nav { display: none; }
+      .header-content { flex-wrap: wrap; }
+      .create-post { flex-wrap: wrap; }
+      .comment-form { flex-direction: column; }
+      .comment-form input, .comment-submit { width: 100%; }
+    }
+  </style>
 </head>
 <body>
-    <div class="login-modal" id="loginModal">
-        <div class="login-content">
-            <div class="login-header">
-                <h2>Join Glitch Guild</h2>
-                <button class="close-login" id="closeLogin" type="button">&times;</button>
-            </div>
-            <p>Login to post, comment, vote, and join the gaming community!</p>
-            <button class="login-btn google" id="googleLoginBtn" type="button">
-                <i class="fab fa-google"></i>
-                Continue with Google
-            </button>
+  <header>
+    <div class="container header-content">
+      <div class="brand">
+        <i class="fas fa-gamepad"></i>
+        <span>Glitch Guild</span>
+      </div>
+
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#"><i class="fas fa-home"></i> Home</a>
+        <a href="#"><i class="fas fa-fire"></i> Popular</a>
+        <a href="#"><i class="fas fa-compass"></i> Discover</a>
+        <a href="#"><i class="fas fa-trophy"></i> Tournaments</a>
+      </nav>
+
+      <div class="user-actions">
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+          <i class="fas fa-moon"></i>
+        </button>
+
+        <div id="userInfo" style="display:none;">
+          <div class="user-info">
+            <img src="" alt="User Avatar" class="user-avatar-header" id="userAvatarHeader" />
+            <span id="userName"></span>
+            <button class="logout-btn" id="logoutBtn" type="button">Logout</button>
+          </div>
         </div>
+
+        <button class="user-profile" id="loginBtn" type="button" aria-label="Login">
+          <i class="fas fa-user-circle"></i>
+        </button>
+      </div>
     </div>
+  </header>
 
-    <header>
-        <div class="container header-content">
-            <div class="logo">
-                <i class="fas fa-gamepad"></i>
-                <span>Glitch Guild</span>
-            </div>
+  <div class="page">
+    <aside class="left-sidebar">
+      <div class="sidebar-section">
+        <h3><i class="fas fa-list"></i> Categories</h3>
+        <ul class="categories-list">
+          <li class="active" data-category="all"><i class="fas fa-globe"></i> All Games</li>
+          <li data-category="fps"><i class="fas fa-crosshairs"></i> FPS</li>
+          <li data-category="rpg"><i class="fas fa-dragon"></i> RPG</li>
+          <li data-category="strategy"><i class="fas fa-chess-board"></i> Strategy</li>
+          <li data-category="sports"><i class="fas fa-futbol"></i> Sports</li>
+          <li data-category="indie"><i class="fas fa-gamepad"></i> Indie</li>
+          <li data-category="mmo"><i class="fas fa-users"></i> MMO</li>
+          <li data-category="mobile"><i class="fas fa-mobile-alt"></i> Mobile</li>
+        </ul>
+      </div>
 
-            <nav class="nav-links" aria-label="Main navigation">
-                <a href="#"><i class="fas fa-home"></i> Home</a>
-                <a href="#"><i class="fas fa-fire"></i> Popular</a>
-                <a href="#"><i class="fas fa-compass"></i> Discover</a>
-                <a href="#"><i class="fas fa-trophy"></i> Tournaments</a>
-                <a href="#"><i class="fas fa-users"></i> Communities</a>
-            </nav>
-
-            <div class="user-actions" id="userActions">
-                <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
-                    <i class="fas fa-moon"></i>
-                </button>
-
-                <div id="userInfo" style="display: none;">
-                    <div class="user-info">
-                        <img src="" alt="User Avatar" class="user-avatar-header" id="userAvatarHeader">
-                        <span id="userName"></span>
-                        <button class="logout-btn" id="logoutBtn" type="button">Logout</button>
-                    </div>
-                </div>
-
-                <button class="user-profile" id="loginBtn" type="button" aria-label="Login">
-                    <i class="fas fa-user-circle"></i>
-                </button>
-            </div>
+      <div class="sidebar-section">
+        <h3><i class="fas fa-chart-line"></i> Trending Games</h3>
+        <div class="trending-games">
+          <div class="game-tag"><img src="https://via.placeholder.com/30/7c3aed/FFFFFF?text=EL" alt="Elden Ring" /><span>Elden Ring</span></div>
+          <div class="game-tag"><img src="https://via.placeholder.com/30/10b981/FFFFFF?text=BG3" alt="Baldur's Gate 3" /><span>Baldur's Gate 3</span></div>
+          <div class="game-tag"><img src="https://via.placeholder.com/30/ef4444/FFFFFF?text=CS2" alt="Counter-Strike 2" /><span>Counter-Strike 2</span></div>
+          <div class="game-tag"><img src="https://via.placeholder.com/30/f59e0b/FFFFFF?text=HL" alt="Helldivers 2" /><span>Helldivers 2</span></div>
         </div>
-    </header>
+      </div>
+    </aside>
 
-    <div class="container">
-        <aside class="sidebar">
-            <div class="sidebar-section">
-                <h3><i class="fas fa-list"></i> Categories</h3>
-                <ul class="categories-list">
-                    <li class="active" data-category="all"><i class="fas fa-globe"></i> All Games</li>
-                    <li data-category="fps"><i class="fas fa-crosshairs"></i> FPS</li>
-                    <li data-category="rpg"><i class="fas fa-dragon"></i> RPG</li>
-                    <li data-category="strategy"><i class="fas fa-chess-board"></i> Strategy</li>
-                    <li data-category="sports"><i class="fas fa-futbol"></i> Sports</li>
-                    <li data-category="indie"><i class="fas fa-gamepad"></i> Indie</li>
-                    <li data-category="mmo"><i class="fas fa-users"></i> MMO</li>
-                    <li data-category="mobile"><i class="fas fa-mobile-alt"></i> Mobile</li>
-                </ul>
-            </div>
+    <main class="main-content">
+      <div class="create-post">
+        <img src="https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG" alt="User Avatar" class="user-avatar" id="createPostAvatar" />
+        <input type="text" id="postContent" placeholder="Share your glitch, tip, or gaming moment..." />
+        <button class="post-btn" id="publishPostBtn" type="button"><i class="fas fa-paper-plane"></i> Post</button>
+      </div>
 
-            <div class="sidebar-section">
-                <h3><i class="fas fa-chart-line"></i> Trending Games</h3>
-                <div class="trending-games">
-                    <div class="game-tag">
-                        <img src="https://via.placeholder.com/30/7c3aed/FFFFFF?text=EL" alt="Elden Ring">
-                        <span>Elden Ring</span>
-                    </div>
-                    <div class="game-tag">
-                        <img src="https://via.placeholder.com/30/10b981/FFFFFF?text=BG3" alt="Baldur's Gate 3">
-                        <span>Baldur's Gate 3</span>
-                    </div>
-                    <div class="game-tag">
-                        <img src="https://via.placeholder.com/30/ef4444/FFFFFF?text=CS2" alt="Counter-Strike 2">
-                        <span>Counter-Strike 2</span>
-                    </div>
-                    <div class="game-tag">
-                        <img src="https://via.placeholder.com/30/f59e0b/FFFFFF?text=HL" alt="Helldivers 2">
-                        <span>Helldivers 2</span>
-                    </div>
-                    <div class="game-tag">
-                        <img src="https://via.placeholder.com/30/8b5cf6/FFFFFF?text=GTA6" alt="GTA VI">
-                        <span>GTA VI</span>
-                    </div>
-                </div>
-            </div>
+      <div class="sort-options" aria-label="Post sorting">
+        <button class="sort-btn active" data-sort="hot" type="button">Hot</button>
+        <button class="sort-btn" data-sort="new" type="button">New</button>
+        <button class="sort-btn" data-sort="top" type="button">Top</button>
+      </div>
 
-            <div class="sidebar-section">
-                <h3><i class="fas fa-info-circle"></i> Guild Rules</h3>
-                <ul class="categories-list">
-                    <li><i class="fas fa-check-circle"></i> Be Respectful</li>
-                    <li><i class="fas fa-check-circle"></i> No Spoilers</li>
-                    <li><i class="fas fa-check-circle"></i> Keep it Gaming</li>
-                    <li><i class="fas fa-check-circle"></i> No Cheating Talk</li>
-                    <li><i class="fas fa-check-circle"></i> LFG Allowed</li>
-                </ul>
-            </div>
-        </aside>
+      <div id="postsContainer"></div>
+    </main>
 
-        <main class="main-content">
-            <div class="create-post">
-                <img src="https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG" alt="User Avatar" class="user-avatar" id="createPostAvatar">
-                <input type="text" id="postContent" placeholder="Share your glitch, tip, or gaming moment...">
-                <button class="post-btn" id="publishPostBtn" type="button">
-                    <i class="fas fa-paper-plane"></i> Post
-                </button>
-            </div>
+    <aside class="right-sidebar">
+      <div class="sidebar-section">
+        <h3><i class="fas fa-users"></i> Online Guild Members</h3>
+        <div class="online-users">
+          <div class="user-item">
+            <img src="https://via.placeholder.com/35/7c3aed/FFFFFF?text=GG" alt="User Avatar" class="user-avatar-small" />
+            <span>GlitchBot</span>
+            <div class="user-status"></div>
+          </div>
+          <div class="user-item">
+            <img src="https://via.placeholder.com/35/10b981/FFFFFF?text=JD" alt="User Avatar" class="user-avatar-small" />
+            <span>JadeDragon</span>
+            <div class="user-status"></div>
+          </div>
+        </div>
+      </div>
 
-            <div class="sort-options" aria-label="Post sorting">
-                <button class="sort-btn active" data-sort="hot" type="button">Hot</button>
-                <button class="sort-btn" data-sort="new" type="button">New</button>
-                <button class="sort-btn" data-sort="top" type="button">Top</button>
-                <button class="sort-btn" data-sort="controversial" type="button">Controversial</button>
-                <button class="sort-btn" data-sort="rising" type="button">Rising</button>
-            </div>
+      <div class="sidebar-section">
+        <h3><i class="fas fa-bullhorn"></i> Guild Announcements</h3>
+        <p>Anyone can log in with a name, post, and comment.</p>
+      </div>
+    </aside>
+  </div>
 
-            <div id="postsContainer"></div>
-        </main>
+  <div class="login-modal" id="loginModal">
+    <div class="login-content">
+      <div class="login-header">
+        <h2>Join Glitch Guild</h2>
+        <button class="close-login" id="closeLogin" type="button" aria-label="Close login">&times;</button>
+      </div>
 
-        <aside class="right-sidebar">
-            <div class="sidebar-section">
-                <h3><i class="fas fa-users"></i> Online Guild Members</h3>
-                <div class="online-users" id="onlineUsers">
-                    <div class="user-item">
-                        <img src="https://via.placeholder.com/35/7c3aed/FFFFFF?text=GG" alt="User Avatar" class="user-avatar-small">
-                        <span>GlitchBot</span>
-                        <div class="user-status"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="sidebar-section">
-                <h3><i class="fas fa-calendar-alt"></i> Upcoming Events</h3>
-                <div class="trending-games">
-                    <div class="game-tag">
-                        <i class="fas fa-trophy" style="color: var(--warning);"></i>
-                        <div>
-                            <div style="font-weight: 600;">CS2 Tournament</div>
-                            <div style="font-size: 0.8rem; color: var(--text-muted-dark);">March 15, 8:00 PM EST</div>
-                        </div>
-                    </div>
-                    <div class="game-tag">
-                        <i class="fas fa-users" style="color: var(--success);"></i>
-                        <div>
-                            <div style="font-weight: 600;">Raid Night: Destiny 2</div>
-                            <div style="font-size: 0.8rem; color: var(--text-muted-dark);">March 17, 9:00 PM EST</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="sidebar-section">
-                <h3><i class="fas fa-bullhorn"></i> Guild Announcements</h3>
-                <p style="font-size: 0.9rem; margin-bottom: 10px;">Welcome to Glitch Guild! Login with Google to start posting.</p>
-            </div>
-        </aside>
+      <p class="login-intro">Everyone can log in with a display name, post, and comment.</p>
+      <input id="displayNameInput" type="text" maxlength="30" placeholder="Enter your display name" />
+      <button class="login-btn" id="guestLoginBtn" type="button">Continue as Guest</button>
+      <button class="login-btn google" id="googleLoginBtn" type="button"><i class="fab fa-google"></i> Continue with Google</button>
     </div>
+  </div>
 
-    <footer>
-        <div class="container footer-content">
-            <div class="footer-section">
-                <h4>Glitch Guild</h4>
-                <p>The ultimate community for gamers to share, discuss, and connect over everything gaming.</p>
+  <script>
+    const STORAGE_KEY = 'glitchGuildUser';
+    const POST_KEY = 'glitchGuildPosts';
+
+    const defaultPosts = [
+      {
+        id: 'welcome-1',
+        userName: 'JadeDragon',
+        userPhoto: 'https://via.placeholder.com/40/10b981/FFFFFF?text=JD',
+        category: 'RPG',
+        categoryKey: 'rpg',
+        title: 'Welcome to Glitch Guild!',
+        content: 'This is the ultimate gaming community. Everyone can log in, post, and comment here!',
+        votes: 42,
+        comments: 2,
+        createdAt: Date.now() - 1000 * 60 * 120,
+        openComments: false,
+        commentsList: [
+          { id: 'c-1', user: 'Mossy', text: 'Love this community already!', createdAt: Date.now() - 1000 * 60 * 50 },
+          { id: 'c-2', user: 'NightWolf', text: 'Great place to share builds and tips.', createdAt: Date.now() - 1000 * 60 * 30 }
+        ]
+      }
+    ];
+
+    const state = {
+      currentUser: null,
+      selectedCategory: 'all',
+      selectedSort: 'hot',
+      posts: loadPosts()
+    };
+
+    const loginModal = document.getElementById('loginModal');
+    const closeLoginBtn = document.getElementById('closeLogin');
+    const googleLoginBtn = document.getElementById('googleLoginBtn');
+    const guestLoginBtn = document.getElementById('guestLoginBtn');
+    const loginBtn = document.getElementById('loginBtn');
+    const userInfo = document.getElementById('userInfo');
+    const userName = document.getElementById('userName');
+    const userAvatarHeader = document.getElementById('userAvatarHeader');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const createPostAvatar = document.getElementById('createPostAvatar');
+    const postContent = document.getElementById('postContent');
+    const publishPostBtn = document.getElementById('publishPostBtn');
+    const postsContainer = document.getElementById('postsContainer');
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = themeToggle.querySelector('i');
+    const displayNameInput = document.getElementById('displayNameInput');
+
+    function loadPosts() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(POST_KEY) || 'null');
+        if (Array.isArray(saved) && saved.length) return saved;
+      } catch (error) {
+        console.warn('Could not load saved posts', error);
+      }
+      return [...defaultPosts];
+    }
+
+    function savePosts() {
+      localStorage.setItem(POST_KEY, JSON.stringify(state.posts));
+    }
+
+    function loadCurrentUser() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function saveCurrentUser(user) {
+      if (user) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+      } else {
+        localStorage.removeItem(STORAGE_KEY);
+      }
+    }
+
+    function formatRelativeTime(timestamp) {
+      if (!timestamp) return 'just now';
+      const diff = Date.now() - new Date(timestamp).getTime();
+      const minutes = Math.floor(diff / 60000);
+      if (minutes < 1) return 'just now';
+      if (minutes < 60) return `${minutes} min ago`;
+      const hours = Math.floor(minutes / 60);
+      if (hours < 24) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+      const days = Math.floor(hours / 24);
+      return `${days} day${days > 1 ? 's' : ''} ago`;
+    }
+
+    function getDefaultAvatar(name = 'GG') {
+      return `https://via.placeholder.com/40/7c3aed/FFFFFF?text=${encodeURIComponent((name || 'GG').slice(0, 2).toUpperCase())}`;
+    }
+
+    function requireAuth() {
+      if (!state.currentUser) {
+        showLoginModal();
+        return false;
+      }
+      return true;
+    }
+
+    function showLoginModal() {
+      loginModal.style.display = 'flex';
+      requestAnimationFrame(() => displayNameInput.focus());
+    }
+
+    function hideLoginModal() {
+      loginModal.style.display = 'none';
+      displayNameInput.value = '';
+    }
+
+    function loginWithName(name) {
+      const trimmed = (name || '').trim();
+      const normalized = trimmed || 'Guest Gamer';
+      const user = {
+        displayName: normalized,
+        photoURL: getDefaultAvatar(normalized)
+      };
+
+      state.currentUser = user;
+      saveCurrentUser(user);
+      updateAuthUI(user);
+      hideLoginModal();
+    }
+
+    function updateThemeUI() {
+      const isLight = document.body.classList.contains('light-mode');
+      themeIcon.classList.remove('fa-moon', 'fa-sun');
+      themeIcon.classList.add(isLight ? 'fa-sun' : 'fa-moon');
+    }
+
+    function updateAuthUI(user) {
+      const loggedIn = !!user;
+      userInfo.style.display = loggedIn ? 'block' : 'none';
+      loginBtn.style.display = loggedIn ? 'none' : 'flex';
+
+      if (loggedIn) {
+        const displayName = user.displayName || 'Guild Member';
+        const avatar = user.photoURL || getDefaultAvatar(displayName);
+        userName.textContent = displayName;
+        userAvatarHeader.src = avatar;
+        createPostAvatar.src = avatar;
+      } else {
+        createPostAvatar.src = 'https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG';
+      }
+    }
+
+    function getVisiblePosts() {
+      let posts = [...state.posts];
+
+      if (state.selectedCategory !== 'all') {
+        posts = posts.filter(post => post.categoryKey === state.selectedCategory);
+      }
+
+      if (state.selectedSort === 'new') {
+        posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      } else if (state.selectedSort === 'top') {
+        posts.sort((a, b) => (b.votes || 0) - (a.votes || 0));
+      } else {
+        posts.sort((a, b) => (b.votes || 0) - (a.votes || 0));
+      }
+
+      return posts;
+    }
+
+    function renderPosts() {
+      const visible = getVisiblePosts();
+
+      postsContainer.innerHTML = visible.map(post => {
+        const comments = Array.isArray(post.commentsList) ? post.commentsList : [];
+        const commentsMarkup = comments.map(comment => `
+          <div class="comment-item">
+            <div class="comment-header">
+              <span class="comment-user">${comment.user || 'Guild Member'}</span>
+              <span class="comment-time">${formatRelativeTime(comment.createdAt || Date.now())}</span>
+            </div>
+            <div>${comment.text || ''}</div>
+          </div>
+        `).join('');
+
+        const isOpen = !!post.openComments;
+        return `
+          <article class="post" data-post-id="${post.id}">
+            <div class="post-header">
+              <img src="${post.userPhoto || getDefaultAvatar(post.userName || 'GG')}" alt="User Avatar" class="user-avatar" />
+              <div>
+                <div class="post-user">${post.userName || 'Guild Member'}</div>
+                <div class="post-time">${formatRelativeTime(post.createdAt || Date.now())}</div>
+              </div>
+              <span class="post-category">${post.category || 'General'}</span>
             </div>
 
-            <div class="footer-section">
-                <h4>Explore</h4>
-                <ul class="footer-links">
-                    <li><a href="#">Popular Games</a></li>
-                    <li><a href="#">Tournaments</a></li>
-                    <li><a href="#">Community Rules</a></li>
-                    <li><a href="#">Leaderboards</a></li>
-                </ul>
+            <h2 class="post-title">${post.title || 'Untitled Post'}</h2>
+            <p class="post-content">${post.content || ''}</p>
+
+            <div class="post-footer">
+              <div class="post-actions">
+                <button class="vote-btn upvote" type="button" data-post-id="${post.id}"><i class="fas fa-arrow-up"></i> <span>${post.votes || 0}</span></button>
+                <button class="vote-btn downvote" type="button" data-post-id="${post.id}"><i class="fas fa-arrow-down"></i></button>
+                <button class="comments-btn" type="button" data-post-id="${post.id}"><i class="fas fa-comment"></i> <span>${post.comments || comments.length}</span></button>
+              </div>
             </div>
 
-            <div class="footer-section">
-                <h4>Support</h4>
-                <ul class="footer-links">
-                    <li><a href="#">Help Center</a></li>
-                    <li><a href="#">Report Issue</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                </ul>
+            <div class="comments-panel ${isOpen ? 'open' : ''}">
+              <div class="comment-list">
+                ${commentsMarkup || '<div class="comment-item">No comments yet. Start the discussion.</div>'}
+              </div>
+              <div class="comment-form">
+                <input type="text" class="comment-input" data-post-id="${post.id}" placeholder="Write a comment..." />
+                <button class="comment-submit" type="button" data-post-id="${post.id}">Comment</button>
+              </div>
             </div>
+          </article>
+        `;
+      }).join('');
+    }
 
-            <div class="footer-section">
-                <h4>Connect</h4>
-                <ul class="footer-links">
-                    <li><a href="#"><i class="fab fa-discord"></i> Discord</a></li>
-                    <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
-                    <li><a href="#"><i class="fab fa-youtube"></i> YouTube</a></li>
-                    <li><a href="#"><i class="fab fa-twitch"></i> Twitch</a></li>
-                </ul>
-            </div>
-        </div>
+    function publishPost() {
+      if (!requireAuth()) return;
 
-        <div class="container copyright">
-            &copy; 2024 Glitch Guild. All rights reserved.
-        </div>
-    </footer>
+      const content = postContent.value.trim();
+      if (!content) {
+        alert('Please write something before posting.');
+        postContent.focus();
+        return;
+      }
 
-    <script>
-        const defaultPosts = [
-            {
-                id: 'welcome-1',
-                userName: 'JadeDragon',
-                userPhoto: 'https://via.placeholder.com/40/10b981/FFFFFF?text=JD',
-                category: 'RPG',
-                categoryKey: 'rpg',
-                title: 'Welcome to Glitch Guild!',
-                content: 'This is the ultimate gaming community. Login to start posting!',
-                votes: 42,
-                comments: 2,
-                createdAt: Date.now() - 1000 * 60 * 120,
-                openComments: false,
-                commentsList: [
-                    { id: 'c-1', user: 'Mossy', text: 'Love this community already!', createdAt: Date.now() - 1000 * 60 * 50 },
-                    { id: 'c-2', user: 'NightWolf', text: 'Great place to share builds and tips.', createdAt: Date.now() - 1000 * 60 * 30 }
-                ]
-            }
-        ];
+      const categoryKey = state.selectedCategory === 'all' ? 'general' : state.selectedCategory;
+      const categoryMap = {
+        all: 'General', fps: 'FPS', rpg: 'RPG', strategy: 'Strategy', sports: 'Sports', indie: 'Indie', mmo: 'MMO', mobile: 'Mobile'
+      };
 
-        const state = {
-            currentUser: null,
-            selectedCategory: 'all',
-            selectedSort: 'hot',
-            posts: [...defaultPosts]
-        };
+      const newPost = {
+        id: `post-${Date.now()}`,
+        userName: state.currentUser.displayName || 'Guild Member',
+        userPhoto: state.currentUser.photoURL || getDefaultAvatar(state.currentUser.displayName || 'GG'),
+        category: categoryMap[categoryKey] || 'General',
+        categoryKey,
+        title: content.length > 70 ? `${content.slice(0, 67).trim()}...` : content,
+        content,
+        votes: 0,
+        comments: 0,
+        createdAt: Date.now(),
+        openComments: false,
+        commentsList: []
+      };
 
-        const loginModal = document.getElementById('loginModal');
-        const closeLoginBtn = document.getElementById('closeLogin');
-        const googleLoginBtn = document.getElementById('googleLoginBtn');
-        const loginBtn = document.getElementById('loginBtn');
-        const userInfo = document.getElementById('userInfo');
-        const userName = document.getElementById('userName');
-        const userAvatarHeader = document.getElementById('userAvatarHeader');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const createPostAvatar = document.getElementById('createPostAvatar');
-        const postContent = document.getElementById('postContent');
-        const publishPostBtn = document.getElementById('publishPostBtn');
-        const postsContainer = document.getElementById('postsContainer');
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = themeToggle.querySelector('i');
+      state.posts.unshift(newPost);
+      savePosts();
+      postContent.value = '';
+      renderPosts();
+    }
 
-        function formatRelativeTime(timestamp) {
-            if (!timestamp) return 'just now';
-            const diff = Date.now() - new Date(timestamp).getTime();
-            const minutes = Math.floor(diff / 60000);
-            if (minutes < 1) return 'just now';
-            if (minutes < 60) return `${minutes} min ago`;
-            const hours = Math.floor(minutes / 60);
-            if (hours < 24) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-            const days = Math.floor(hours / 24);
-            return `${days} day${days > 1 ? 's' : ''} ago`;
-        }
+    function voteOnPost(postId, direction) {
+      if (!requireAuth()) return;
 
-        function getDefaultAvatar(name = 'GG') {
-            return `https://via.placeholder.com/40/7c3aed/FFFFFF?text=${encodeURIComponent(name.slice(0, 2).toUpperCase())}`;
-        }
+      const post = state.posts.find(item => item.id === postId);
+      if (!post) return;
 
-        function requireAuth() {
-            if (!state.currentUser) {
-                loginModal.style.display = 'flex';
-                return false;
-            }
-            return true;
-        }
+      post.votes = Number(post.votes || 0) + (direction === 'up' ? 1 : -1);
+      savePosts();
+      renderPosts();
+    }
 
-        function showLoginModal() {
-            loginModal.style.display = 'flex';
-        }
+    function addComment(postId, rawText) {
+      if (!requireAuth()) return;
 
-        function hideLoginModal() {
-            loginModal.style.display = 'none';
-        }
+      const text = String(rawText || '').trim();
+      if (!text) return;
 
-        function updateThemeUI() {
-            const isLight = document.body.classList.contains('light-mode');
-            themeIcon.classList.remove('fa-moon', 'fa-sun');
-            themeIcon.classList.add(isLight ? 'fa-sun' : 'fa-moon');
-        }
+      const post = state.posts.find(item => item.id === postId);
+      if (!post) return;
 
-        function updateAuthUI(user) {
-            const loggedIn = !!user;
-            userInfo.style.display = loggedIn ? 'block' : 'none';
-            loginBtn.style.display = loggedIn ? 'none' : 'flex';
+      if (!post.commentsList) post.commentsList = [];
 
-            if (loggedIn) {
-                const displayName = user.displayName || 'Guild Member';
-                const avatar = user.photoURL || getDefaultAvatar(displayName);
-                userName.textContent = displayName;
-                userAvatarHeader.src = avatar;
-                createPostAvatar.src = avatar;
-            } else {
-                createPostAvatar.src = 'https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG';
-            }
-        }
+      post.commentsList.push({
+        id: `comment-${Date.now()}`,
+        user: state.currentUser.displayName || 'Guild Member',
+        text,
+        createdAt: Date.now()
+      });
 
-        function comparePosts(a, b) {
-            switch (state.selectedSort) {
-                case 'new': return new Date(b.createdAt || Date.now()) - new Date(a.createdAt || Date.now());
-                case 'top': return (b.votes || 0) - (a.votes || 0);
-                case 'controversial': return ((b.comments || 0) + (b.votes || 0)) - ((a.comments || 0) + (a.votes || 0));
-                case 'rising': return ((b.votes || 0) + (b.comments || 0) * 2) - ((a.votes || 0) + (a.comments || 0) * 2);
-                case 'hot':
-                default:
-                    return ((b.votes || 0) + (b.comments || 0) * 2) - ((a.votes || 0) + (a.comments || 0) * 2);
-            }
-        }
+      post.comments = post.commentsList.length;
+      post.openComments = true;
+      savePosts();
+      renderPosts();
+    }
 
-        function getFilteredPosts() {
-            let posts = [...state.posts];
-            if (state.selectedCategory !== 'all') {
-                posts = posts.filter(post => (post.categoryKey || post.category || 'general').toLowerCase() === state.selectedCategory.toLowerCase());
-            }
-            return posts.sort(comparePosts);
-        }
+    function bindEvents() {
+      closeLoginBtn.addEventListener('click', hideLoginModal);
+      googleLoginBtn.addEventListener('click', () => loginWithName(displayNameInput.value || 'Google User'));
+      guestLoginBtn.addEventListener('click', () => loginWithName(displayNameInput.value));
+      displayNameInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') loginWithName(displayNameInput.value);
+      });
 
-        function renderPosts() {
-            const posts = getFilteredPosts();
+      loginBtn.addEventListener('click', showLoginModal);
+      logoutBtn.addEventListener('click', () => {
+        state.currentUser = null;
+        saveCurrentUser(null);
+        updateAuthUI(null);
+      });
 
-            if (!posts.length) {
-                postsContainer.innerHTML = `
-                    <div class="post">
-                        <div class="post-content">
-                            <p>No posts match this category yet.</p>
-                        </div>
-                    </div>
-                `;
-                return;
-            }
+      publishPostBtn.addEventListener('click', publishPost);
+      postContent.addEventListener('keydown', event => {
+        if (event.key === 'Enter') publishPost();
+      });
 
-            postsContainer.innerHTML = posts.map(post => {
-                const voteValue = Number(post.votes || 0);
-                const commentsValue = Array.isArray(post.commentsList) ? post.commentsList.length : Number(post.comments || 0);
-                const isOpen = !!post.openComments;
-                const commentsMarkup = (post.commentsList || []).map(comment => `
-                    <div class="comment-item">
-                        <div class="comment-header">
-                            <span class="comment-user">${comment.user || 'Guild Member'}</span>
-                            <span class="comment-time">${formatRelativeTime(comment.createdAt || Date.now())}</span>
-                        </div>
-                        <div>${comment.text || ''}</div>
-                    </div>
-                `).join('');
-
-                return `
-                    <article class="post" data-post-id="${post.id}">
-                        <div class="post-header">
-                            <img src="${post.userPhoto || getDefaultAvatar(post.userName || 'GG')}" alt="User Avatar" class="user-avatar">
-                            <div>
-                                <div class="post-user">${post.userName || 'Guild Member'}</div>
-                                <div class="post-time">${formatRelativeTime(post.createdAt || Date.now())}</div>
-                            </div>
-                            <span class="post-category">${post.category || 'General'}</span>
-                        </div>
-
-                        <h2 class="post-title">${post.title || 'Untitled Post'}</h2>
-                        <p class="post-content">${post.content || ''}</p>
-
-                        <div class="post-footer">
-                            <div class="post-actions">
-                                <button class="vote-btn upvote" type="button" data-post-id="${post.id}">
-                                    <i class="fas fa-arrow-up"></i>
-                                    <span>${voteValue}</span>
-                                </button>
-                                <button class="vote-btn downvote" type="button" data-post-id="${post.id}">
-                                    <i class="fas fa-arrow-down"></i>
-                                </button>
-                                <button class="comments-btn" type="button" data-post-id="${post.id}">
-                                    <i class="fas fa-comment"></i>
-                                    <span>${commentsValue}</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="comments-panel ${isOpen ? 'open' : ''}">
-                            <div class="comment-list">
-                                ${commentsMarkup || '<div class="comment-item">No comments yet. Start the discussion.</div>'}
-                            </div>
-                            <div class="comment-form">
-                                <input type="text" class="comment-input" data-post-id="${post.id}" placeholder="Write a comment...">
-                                <button class="comment-submit" type="button" data-post-id="${post.id}">Comment</button>
-                            </div>
-                        </div>
-                    </article>
-                `;
-            }).join('');
-        }
-
-        function publishPost() {
-            if (!requireAuth()) return;
-
-            const content = postContent.value.trim();
-            if (!content) {
-                alert('Please write something before posting.');
-                postContent.focus();
-                return;
-            }
-
-            const categoryKey = state.selectedCategory === 'all' ? 'general' : state.selectedCategory;
-            const categoryMap = {
-                all: 'General', fps: 'FPS', rpg: 'RPG', strategy: 'Strategy', sports: 'Sports', indie: 'Indie', mmo: 'MMO', mobile: 'Mobile'
-            };
-
-            const newPost = {
-                id: `post-${Date.now()}`,
-                userName: state.currentUser?.displayName || 'Guild Member',
-                userPhoto: state.currentUser?.photoURL || getDefaultAvatar(state.currentUser?.displayName || 'GG'),
-                category: categoryMap[categoryKey] || 'General',
-                categoryKey,
-                title: content.length > 65 ? `${content.slice(0, 62).trim()}...` : content,
-                content,
-                votes: 0,
-                comments: 0,
-                createdAt: Date.now(),
-                openComments: false,
-                commentsList: []
-            };
-
-            state.posts.unshift(newPost);
-            postContent.value = '';
-            renderPosts();
-        }
-
-        function voteOnPost(postId, direction) {
-            if (!requireAuth()) return;
-
-            const post = state.posts.find(item => item.id === postId);
-            if (!post) return;
-
-            const nextVotes = Number(post.votes || 0) + (direction === 'up' ? 1 : -1);
-            post.votes = nextVotes;
-            renderPosts();
-        }
-
-        function addComment(postId, rawText) {
-            const text = String(rawText || '').trim();
-            if (!text) return;
-
-            const post = state.posts.find(item => item.id === postId);
-            if (!post) return;
-
-            if (!post.commentsList) post.commentsList = [];
-
-            post.commentsList.push({
-                id: `comment-${Date.now()}`,
-                user: state.currentUser?.displayName || 'Guild Member',
-                text,
-                createdAt: Date.now()
-            });
-
-            post.comments = post.commentsList.length;
-            post.openComments = true;
-            renderPosts();
-        }
-
-        function bindEvents() {
-            closeLoginBtn.addEventListener('click', hideLoginModal);
-            googleLoginBtn.addEventListener('click', () => {
-                state.currentUser = {
-                    displayName: 'Guest Gamer',
-                    photoURL: 'https://via.placeholder.com/40/7c3aed/FFFFFF?text=GG'
-                };
-                updateAuthUI(state.currentUser);
-                hideLoginModal();
-            });
-
-            loginBtn.addEventListener('click', showLoginModal);
-            logoutBtn.addEventListener('click', () => {
-                state.currentUser = null;
-                updateAuthUI(null);
-            });
-
-            publishPostBtn.addEventListener('click', publishPost);
-            postContent.addEventListener('keydown', event => {
-                if (event.key === 'Enter') publishPost();
-            });
-
-            themeToggle.addEventListener('click', () => {
-                document.body.classList.toggle('light-mode');
-                updateThemeUI();
-            });
-
-            document.querySelectorAll('.sort-btn').forEach(button => {
-                button.addEventListener('click', () => {
-                    state.selectedSort = button.dataset.sort || 'hot';
-                    document.querySelectorAll('.sort-btn').forEach(btn => btn.classList.toggle('active', btn === button));
-                    renderPosts();
-                });
-            });
-
-            document.querySelectorAll('.categories-list li').forEach(item => {
-                item.addEventListener('click', () => {
-                    state.selectedCategory = item.dataset.category || 'all';
-                    document.querySelectorAll('.categories-list li').forEach(li => li.classList.toggle('active', li === item));
-                    renderPosts();
-                });
-            });
-
-            postsContainer.addEventListener('click', (event) => {
-                const voteBtn = event.target.closest('.vote-btn.upvote');
-                if (voteBtn) {
-                    voteOnPost(voteBtn.dataset.postId, 'up');
-                    return;
-                }
-
-                const downVoteBtn = event.target.closest('.vote-btn.downvote');
-                if (downVoteBtn) {
-                    voteOnPost(downVoteBtn.dataset.postId, 'down');
-                    return;
-                }
-
-                const commentBtn = event.target.closest('.comments-btn');
-                if (commentBtn) {
-                    const postId = commentBtn.dataset.postId;
-                    state.posts = state.posts.map(post => post.id === postId ? { ...post, openComments: !post.openComments } : post);
-                    renderPosts();
-                    return;
-                }
-
-                const commentSubmit = event.target.closest('.comment-submit');
-                if (commentSubmit) {
-                    const postId = commentSubmit.dataset.postId;
-                    const input = postsContainer.querySelector(`.comment-input[data-post-id="${postId}"]`);
-                    addComment(postId, input ? input.value : '');
-                    if (input) input.value = '';
-                    return;
-                }
-            });
-
-            postsContainer.addEventListener('keydown', (event) => {
-                if (event.target.matches('.comment-input') && event.key === 'Enter') {
-                    const postId = event.target.dataset.postId;
-                    addComment(postId, event.target.value);
-                    event.target.value = '';
-                }
-            });
-
-            window.addEventListener('click', (event) => {
-                if (event.target === loginModal) hideLoginModal();
-            });
-        }
-
+      themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('light-mode');
         updateThemeUI();
-        updateAuthUI(state.currentUser);
-        bindEvents();
-        renderPosts();
-        const requireAuth = () => {
-  if (!auth.currentUser) {
-    loginModal.style.display = 'flex';
-    return false;
-  }
-  return true;
-};
+      });
 
-publishPostBtn.addEventListener('click', async () => {
-  if (!requireAuth()) return;
+      document.querySelectorAll('.sort-btn').forEach(button => {
+        button.addEventListener('click', () => {
+          state.selectedSort = button.dataset.sort || 'hot';
+          document.querySelectorAll('.sort-btn').forEach(btn => btn.classList.toggle('active', btn === button));
+          renderPosts();
+        });
+      });
 
-  const text = postContent.value.trim();
-  if (!text) {
-    postContent.focus();
-    return;
-  }
+      document.querySelectorAll('.categories-list li').forEach(item => {
+        item.addEventListener('click', () => {
+          state.selectedCategory = item.dataset.category || 'all';
+          document.querySelectorAll('.categories-list li').forEach(li => li.classList.toggle('active', li === item));
+          renderPosts();
+        });
+      });
 
-  try {
-    await addDoc(collection(db, 'posts'), {
-      content: text,
-      author: auth.currentUser.displayName,
-      uid: auth.currentUser.uid,
-      createdAt: serverTimestamp()
-    });
+      postsContainer.addEventListener('click', (event) => {
+        const voteUp = event.target.closest('.vote-btn.upvote');
+        if (voteUp) {
+          voteOnPost(voteUp.dataset.postId, 'up');
+          return;
+        }
 
-    postContent.value = '';
-  } catch (error) {
-    console.error('Post failed:', error);
-  }
-});
+        const voteDown = event.target.closest('.vote-btn.downvote');
+        if (voteDown) {
+          voteOnPost(voteDown.dataset.postId, 'down');
+          return;
+        }
 
-document.querySelectorAll('.vote-btn').forEach(button => {
-  button.addEventListener('click', () => {
-    if (!requireAuth()) return;
+        const commentToggle = event.target.closest('.comments-btn');
+        if (commentToggle) {
+          const postId = commentToggle.dataset.postId;
+          state.posts = state.posts.map(post => post.id === postId ? { ...post, openComments: !post.openComments } : post);
+          savePosts();
+          renderPosts();
+          return;
+        }
 
-    // vote logic here
-  });
-});
-    </script>
+        const commentSubmit = event.target.closest('.comment-submit');
+        if (commentSubmit) {
+          const postId = commentSubmit.dataset.postId;
+          const input = postsContainer.querySelector(`.comment-input[data-post-id="${postId}"]`);
+          addComment(postId, input ? input.value : '');
+          if (input) input.value = '';
+        }
+      });
+
+      postsContainer.addEventListener('keydown', (event) => {
+        if (event.target.matches('.comment-input') && event.key === 'Enter') {
+          const postId = event.target.dataset.postId;
+          addComment(postId, event.target.value);
+          event.target.value = '';
+        }
+      });
+
+      window.addEventListener('click', (event) => {
+        if (event.target === loginModal) hideLoginModal();
+      });
+    }
+
+    state.currentUser = loadCurrentUser();
+    updateThemeUI();
+    updateAuthUI(state.currentUser);
+    bindEvents();
+    renderPosts();
+  </script>
 </body>
 </html>
